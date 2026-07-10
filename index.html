@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>sate@root:~#</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#050505',
+          panel: '#0b0c0d',
+          hairline: '#1f2224',
+          accent: '#39ff8f',
+          accentDim: '#1c8a52',
+          muted: '#8b9296',
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          sans: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<link rel="stylesheet" href="style.css" />
+
+<!-- FANCY, AESTHETIC FAVICON -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <!-- Dark Circle Background for High Contrast -->
+    <circle cx='50' cy='50' r='48' fill='%23111111' stroke='%23333333' stroke-width='1'/>
+    
+    <!-- Geometric 'S' - Interlocking Vectors representing Engineering/Security -->
+    <path d='M25 35 L50 20 L75 35 L60 45 L50 38 L40 45 Z M75 65 L50 80 L25 65 L40 55 L50 62 L60 55 Z' 
+          fill='%23FFFFFF' 
+          stroke='%23FFFFFF' 
+          stroke-width='1.5' 
+          stroke-linejoin='bevel'/>
+    
+    <!-- Subtle Inner Connectivity Lines (optional for more detail, can be removed for pure minimalism) -->
+    <line x1='50' y1='38' x2='50' y2='62' stroke='%23FFFFFF' stroke-width='1.5' stroke-linecap='round' stroke-opacity='0.5'/>
+</svg>">
+</head>
+<body class="bg-bg text-white font-sans overflow-x-hidden">
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Noise overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Grid scanline bg -->
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<header class="fixed top-0 left-0 w-full z-40 border-b border-hairline/70 backdrop-blur-md bg-bg/60">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+    <a href="#home" class="font-mono text-sm tracking-widest text-accent nav-logo" data-magnetic>
+      &gt; sate@haddadin<span class="blink-cursor">_</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest uppercase text-muted">
+      <a href="#experience" class="nav-link" data-magnetic>Experience</a>
+      <a href="#projects" class="nav-link" data-magnetic>Projects</a>
+      <a href="#education" class="nav-link" data-magnetic>Education</a>
+      <a href="#contact" class="nav-link" data-magnetic>Contact</a>
+    </nav>
+    <div class="font-mono text-xs text-muted hidden sm:flex items-center gap-2">
+      <span class="status-dot"></span> SYSTEM ONLINE
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="relative min-h-screen flex flex-col justify-center px-6 md:px-10 pt-24">
+  <div class="max-w-7xl mx-auto w-full">
+
+    <p class="font-mono text-accent text-xs md:text-sm tracking-[0.3em] uppercase mb-6 overflow-hidden">
+      <span class="reveal-line inline-block">// initializing_profile.sh</span>
+    </p>
+
+    <h1 class="font-sans font-black leading-[0.95] tracking-tight text-[13vw] md:text-[7.5vw] mb-8">
+      <span class="block overflow-hidden"><span class="hero-word inline-block">Sate</span></span>
+      <span class="block overflow-hidden"><span class="hero-word inline-block text-outline">Haddadin</span></span>
+    </h1>
+
+    <div class="max-w-2xl">
+      <p class="font-mono text-sm md:text-base text-accent mb-3 hero-fade" data-scramble>
+        3RD-YEAR COMPUTER ENGINEERING STUDENT
+      </p>
+      <p class="font-mono text-sm md:text-base text-muted mb-8 hero-fade" data-scramble>
+        CYBERSECURITY ENTHUSIAST
+      </p>
+      <p class="text-muted text-base md:text-lg leading-relaxed hero-fade">
+        Focused on <span class="text-white font-medium">ethical hacking</span>,
+        <span class="text-white font-medium"> secure systems design</span>, and
+        <span class="text-white font-medium"> building robust infrastructure</span> —
+        approaching every system the way an attacker would, so it never has to be.
+      </p>
+    </div>
+
+    <div class="mt-12 flex items-center gap-6 hero-fade">
+      <a href="#experience" class="magnetic-btn group" data-magnetic>
+        <span class="relative z-10 font-mono text-xs tracking-widest uppercase">View Work</span>
+      </a>
+      <a href="#contact" class="font-mono text-xs tracking-widest uppercase text-muted hover:text-accent transition-colors nav-link" data-magnetic>
+        Get in touch →
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-widest text-muted/60 flex flex-col items-center gap-2 scroll-cue">
+    <span>SCROLL</span>
+    <span class="w-px h-8 bg-hairline scroll-line"></span>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="relative px-6 md:px-10 py-32 border-t border-hairline">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-between mb-20 reveal-up">
+      <div>
+        <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">01 / Career Log</p>
+        <h2 class="font-sans font-bold text-4xl md:text-6xl tracking-tight">Experience</h2>
+      </div>
+      <p class="font-mono text-xs text-muted hidden md:block">./var/log/experience.log</p>
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- Umniah -->
+      <article class="exp-card reveal-up group">
+        <div class="exp-card-inner">
+          <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
+            <div class="md:w-64 shrink-0">
+              <p class="font-mono text-xs text-accent tracking-widest uppercase mb-2">[ Jul 2026 — Present ]</p>
+              <p class="font-mono text-[11px] text-muted/70 tracking-widest uppercase my-3 pl-2 border-l border-hairline">GJU Dual Studies Track</p>
+              <p class="font-mono text-[11px] text-muted tracking-wide">[ Jul 2025 — Sep 2025 ]</p>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-sans font-semibold text-2xl md:text-3xl">Umniah</h3>
+                <span class="font-mono text-[10px] text-accent border border-accent/30 rounded-full px-3 py-1 tracking-widest uppercase">Intern</span>
+              </div>
+              <p class="font-mono text-sm text-muted mb-5 tracking-wide">Managed Services Intern</p>
+              <p class="text-muted leading-relaxed mb-6">
+                Managing and routing enterprise telecom infrastructure across the Managed Services division
+                as part of the <span class="text-white">GJU Dual Studies program</span>, a three-year track
+                combining academic study with recurring industry work terms. Provisioning lines, configuring
+                routing logic, and administering users on <span class="text-white">Cisco Call Manager (CUCM)</span>
+                for <span class="text-white"> Shared, FTTH, and SMP DID</span> pools. Extending the same
+                unified-communications workflows — line provisioning, call routing, user administration —
+                across <span class="text-white">Telefinity PBX</span> deployments to keep enterprise voice
+                infrastructure consistent and operational.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag">Cisco Call Manager</span>
+                <span class="tag">Telefinity PBX</span>
+                <span class="tag">DID Provisioning</span>
+                <span class="tag">Enterprise Telecom</span>
+                <span class="tag">Unified Comms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- NeuroLink -->
+      <article class="exp-card reveal-up group">
+        <div class="exp-card-inner">
+          <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
+            <div class="md:w-64 shrink-0">
+              <p class="font-mono text-xs text-accent tracking-widest uppercase mb-2">Co-Founder</p>
+              <p class="font-mono text-[11px] text-muted tracking-wide">[ Nov 2025 — Apr 2026 ]</p>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-sans font-semibold text-2xl md:text-3xl">NeuroLink Agency</h3>
+                <span class="font-mono text-[10px] text-accent border border-accent/30 rounded-full px-3 py-1 tracking-widest uppercase">Founder</span>
+              </div>
+              <p class="font-mono text-sm text-muted mb-5 tracking-wide">Co-Founder &amp; Brand Architect</p>
+              <p class="text-muted leading-relaxed mb-6">
+                Spearheaded the agency's visual identity and brand strategy from the ground up —
+                defining design systems, tone, and creative direction to establish a
+                <span class="text-white">cohesive, premium market presence</span>. Led creative
+                direction across client engagements, translating brand vision into consistent,
+                high-impact visual output.
+              </p>
+
+              <div class="mb-6 pl-4 border-l border-accent/30">
+                <p class="font-mono text-[11px] text-accent tracking-widest uppercase mb-2">// Technical Achievement</p>
+                <p class="text-muted leading-relaxed">
+                  Engineered a fully automated <span class="text-white">Retrieval-Augmented Generation (RAG)</span>
+                  chatbot using n8n, seamlessly integrated with Meta APIs (Instagram/Messenger) to handle client
+                  inquiries. Built the backend with <span class="text-white">Supabase</span> (database/vector storage)
+                  and utilized <span class="text-white">Google Cloud</span> for dynamic routing to human agents.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <span class="tag">Brand Strategy</span>
+                <span class="tag">Visual Identity</span>
+                <span class="tag">Creative Direction</span>
+                <span class="tag">n8n</span>
+                <span class="tag">Supabase</span>
+                <span class="tag">Google Cloud</span>
+                <span class="tag">Meta APIs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="relative px-6 md:px-10 py-32 border-t border-hairline">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-between mb-20 reveal-up">
+      <div>
+        <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">02 / Builds</p>
+        <h2 class="font-sans font-bold text-4xl md:text-6xl tracking-tight">Projects</h2>
+      </div>
+      <p class="font-mono text-xs text-muted hidden md:block">./repos --list</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="project-card reveal-up" data-magnetic-card>
+        <div class="project-card-inner">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-[10px] text-muted tracking-widest uppercase">// 001</span>
+            <span class="font-mono text-[10px] text-accent tracking-widest uppercase">[ TBD ]</span>
+          </div>
+          <h3 class="font-sans font-semibold text-xl mb-3 text-muted">Project Slot 01</h3>
+          <p class="font-mono text-xs text-muted/60 leading-relaxed mb-8">
+            Awaiting deployment — title, description, and stack details coming soon.
+          </p>
+          <div class="project-reveal">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag">Stack TBD</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono text-xs">
+              <a href="#" class="text-accent flex items-center gap-1 hover:underline" data-magnetic>GitHub <span>↗</span></a>
+              <a href="#" class="text-muted flex items-center gap-1 hover:text-accent transition-colors" data-magnetic>Live Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up" data-magnetic-card>
+        <div class="project-card-inner">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-[10px] text-muted tracking-widest uppercase">// 002</span>
+            <span class="font-mono text-[10px] text-accent tracking-widest uppercase">[ TBD ]</span>
+          </div>
+          <h3 class="font-sans font-semibold text-xl mb-3 text-muted">Project Slot 02</h3>
+          <p class="font-mono text-xs text-muted/60 leading-relaxed mb-8">
+            Awaiting deployment — title, description, and stack details coming soon.
+          </p>
+          <div class="project-reveal">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag">Stack TBD</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono text-xs">
+              <a href="#" class="text-accent flex items-center gap-1 hover:underline" data-magnetic>GitHub <span>↗</span></a>
+              <a href="#" class="text-muted flex items-center gap-1 hover:text-accent transition-colors" data-magnetic>Live Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up" data-magnetic-card>
+        <div class="project-card-inner">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-[10px] text-muted tracking-widest uppercase">// 003</span>
+            <span class="font-mono text-[10px] text-accent tracking-widest uppercase">[ TBD ]</span>
+          </div>
+          <h3 class="font-sans font-semibold text-xl mb-3 text-muted">Project Slot 03</h3>
+          <p class="font-mono text-xs text-muted/60 leading-relaxed mb-8">
+            Awaiting deployment — title, description, and stack details coming soon.
+          </p>
+          <div class="project-reveal">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag">Stack TBD</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono text-xs">
+              <a href="#" class="text-accent flex items-center gap-1 hover:underline" data-magnetic>GitHub <span>↗</span></a>
+              <a href="#" class="text-muted flex items-center gap-1 hover:text-accent transition-colors" data-magnetic>Live Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="relative px-6 md:px-10 py-32 border-t border-hairline">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-between mb-20 reveal-up">
+      <div>
+        <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">03 / Background</p>
+        <h2 class="font-sans font-bold text-4xl md:text-6xl tracking-tight">Education</h2>
+      </div>
+      <p class="font-mono text-xs text-muted hidden md:block">./academic_history</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div class="edu-card reveal-up">
+        <p class="font-mono text-xs text-accent tracking-widest uppercase mb-4">2024 — Present</p>
+        <h3 class="font-sans font-semibold text-2xl mb-2">German Jordanian University</h3>
+        <p class="font-mono text-sm text-muted mb-6 tracking-wide">B.S. Computer Engineering</p>
+        <div class="w-full h-px bg-hairline mb-6"></div>
+        <p class="text-muted text-sm leading-relaxed">
+          Currently in the <span class="text-white">3rd year</span> of a rigorous engineering
+          curriculum spanning systems architecture, networking, and applied security fundamentals.
+        </p>
+
+        <div class="mt-6 pl-4 border-l border-hairline space-y-2 font-mono text-xs">
+          <p class="text-muted/60 tracking-wide">
+            <span class="text-accent">$</span> GPA: <span class="text-white">87.8</span> <span class="text-muted">(Excellent)</span>
+          </p>
+          <p class="text-muted/60 tracking-wide">
+            <span class="text-accent">$</span> Awards: <span class="text-white">Winter Language Course Scholarship '27</span> <span class="text-muted">(1-Month German Program)</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="edu-card reveal-up">
+        <p class="font-mono text-xs text-accent tracking-widest uppercase mb-4">Graduated</p>
+        <h3 class="font-sans font-semibold text-2xl mb-2">Amman Baptist School</h3>
+        <p class="font-mono text-sm text-muted mb-6 tracking-wide">IGCSE &amp; A-Levels — Scientific Stream</p>
+        <div class="w-full h-px bg-hairline mb-6"></div>
+        <p class="text-muted text-sm leading-relaxed">
+          Completed the Scientific Stream track under the IGCSE and A-Level curricula.
+        </p>
+
+        <div class="mt-6 pl-4 border-l border-hairline space-y-2 font-mono text-xs">
+          <p class="text-muted/60 tracking-wide">
+            <span class="text-accent">$</span> GPA: <span class="text-white">98.1</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact" class="relative px-6 md:px-10 pt-32 pb-10 border-t border-hairline overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal-up mb-20">
+      <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-6">04 / Connect</p>
+      <h2 class="font-sans font-bold text-[12vw] md:text-[6.5vw] leading-[0.95] tracking-tight">
+        Let's build<br/>something<span class="text-accent">.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+    <a href="https://linkedin.com/in/YOUR_PROFILE" target="_blank" rel="noopener" class="contact-link reveal-up" data-magnetic>
+        <span class="font-mono text-[10px] text-muted tracking-widest uppercase">Professional</span>
+        <span class="flex items-center justify-between mt-3">
+            <span class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                <span class="font-sans font-medium text-xl">LinkedIn</span>
+            </span>
+            <span class="arrow">↗</span>
+        </span>
+    </a>
+
+    <a href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener" class="contact-link reveal-up" data-magnetic>
+        <span class="font-mono text-[10px] text-muted tracking-widest uppercase">Code</span>
+        <span class="flex items-center justify-between mt-3">
+            <span class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span class="font-sans font-medium text-xl">GitHub</span>
+            </span>
+            <span class="arrow">↗</span>
+        </span>
+    </a>
+
+    <a href="mailto:satehaddadin100@gmail.com" class="contact-link reveal-up" data-magnetic>
+        <span class="font-mono text-[10px] text-muted tracking-widest uppercase">Direct</span>
+        <span class="flex items-center justify-between mt-3">
+            <span class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                <span class="font-sans font-medium text-xl">Email</span>
+            </span>
+            <span class="arrow">↗</span>
+        </span>
+    </a>
+</div>
+
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-hairline font-mono text-[11px] text-muted tracking-wide">
+      <span>© <span id="year"></span> Sate Haddadin — All systems operational.</span>
+      <span class="flex items-center gap-2"><span class="status-dot"></span> Built with GSAP + Tailwind</span>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
