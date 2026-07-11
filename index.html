@@ -82,6 +82,19 @@
       margin-top: 3rem;
     }
 
+    /* Fix: the "// initializing_profile.sh" line was disappearing
+       on mobile. Its reveal-line span starts translated 100% down
+       (hidden) and relies on GSAP's hero timeline to animate it
+       into view. Changing the hero's layout above shifted timing
+       enough that on some mobile browsers the animation state
+       never resolved, leaving it permanently hidden. Forcing it
+       visible by default here means it always shows immediately;
+       if GSAP's animation still fires correctly it just plays the
+       same slide-up reveal on top of an already-visible line. */
+    #home .reveal-line {
+      transform: translateY(0%) !important;
+    }
+
     /* Section spacing fix: py-32 (128px top+bottom) was tuned for
        desktop's larger canvas. On mobile, that padding plus the
        mb-20 (80px) on each section's header wrapper stacks into a
