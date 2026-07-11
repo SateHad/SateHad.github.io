@@ -81,6 +81,24 @@
       transform: none;
       margin-top: 3rem;
     }
+
+    /* Section spacing fix: py-32 (128px top+bottom) was tuned for
+       desktop's larger canvas. On mobile, that padding plus the
+       mb-20 (80px) on each section's header wrapper stacks into a
+       ~350px dead zone before any real content appears — visible as
+       a big empty gap right after each section boundary. Scaling
+       both down on mobile keeps the same visual rhythm at a size
+       that fits small screens without the awkward void. */
+    section {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
+    }
+    section .mb-20 {
+      margin-bottom: 2.5rem !important;
+    }
+    footer {
+      padding-top: 5rem !important;
+    }
   }
 </style>
 </head>
