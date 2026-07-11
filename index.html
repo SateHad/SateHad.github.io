@@ -9,7 +9,6 @@
 <meta name="keywords" content="Sate Haddadin, Computer Engineering, GJU, Cybersecurity, IP Networking, NeuroLink AI, Portfolio">
 <meta name="author" content="Sate Haddadin">
 
-<!-- Open Graph / Link Preview -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://satehaddadin.com/" />
 <meta property="og:title" content="Sate Haddadin | Engineering Portfolio" />
@@ -18,13 +17,11 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Sate Haddadin | Engineering Portfolio" />
 <meta name="twitter:description" content="Computer Engineering student focused on systems architecture, AI automation, and network security." />
 <meta name="twitter:image" content="https://satehaddadin.com/og-image.png" />
 
-<!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -47,88 +44,26 @@
   };
 </script>
 
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <link rel="stylesheet" href="style.css" />
 
-<!-- FANCY, AESTHETIC FAVICON -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-<style>
-  /* Mobile hero spacing fix: min-h-screen + justify-center creates
-     large, uneven gaps on mobile due to dynamic viewport height
-     (browser chrome resizing) and the fixed pt-24 offset. Using
-     100svh (small viewport height) locks to the stable visible
-     area, and swapping justify-center for a tighter flex flow
-     removes the oversized gaps above/below content on small screens.
-     padding-top also adds env(safe-area-inset-top) so devices with
-     a notch/Dynamic Island don't get their first line covered by
-     the fixed header. */
-  @media (max-width: 767px) {
-    #home {
-      min-height: 100svh;
-      justify-content: flex-start;
-      padding-top: calc(6.5rem + env(safe-area-inset-top));
-      padding-bottom: 2rem;
-    }
-    #home .scroll-cue {
-      position: relative;
-      bottom: auto;
-      left: auto;
-      transform: none;
-      margin-top: 3rem;
-    }
-
-    /* Fix: the "// initializing_profile.sh" line was disappearing/
-       hidden on mobile. Its reveal-line span starts translated 100%
-       down (hidden) and relies on GSAP's hero timeline to animate
-       it into view. Forcing it visible by default here means it
-       always shows immediately; if GSAP's animation still fires
-       correctly it just plays the same slide-up reveal on top of
-       an already-visible line, so nothing is lost either way. */
-    #home .reveal-line {
-      transform: translateY(0%) !important;
-    }
-
-    /* Section spacing fix: py-32 (128px top+bottom) was tuned for
-       desktop's larger canvas. On mobile, that padding plus the
-       mb-20 (80px) on each section's header wrapper stacks into a
-       ~350px dead zone before any real content appears — visible as
-       a big empty gap right after each section boundary. Scaling
-       both down on mobile keeps the same visual rhythm at a size
-       that fits small screens without the awkward void. */
-    section {
-      padding-top: 4rem !important;
-      padding-bottom: 4rem !important;
-    }
-    section .mb-20 {
-      margin-bottom: 2.5rem !important;
-    }
-    footer {
-      padding-top: 5rem !important;
-    }
-  }
-</style>
 </head>
 <body class="bg-bg text-white font-sans overflow-x-hidden">
 
-<!-- Custom cursor -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- Noise overlay -->
 <div class="noise-overlay"></div>
 
-<!-- Grid scanline bg -->
 <div class="grid-bg"></div>
 
-<!-- NAV -->
 <header class="fixed top-0 left-0 w-full z-40 border-b border-hairline/70 backdrop-blur-md bg-bg/60">
   <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
     <a href="#home" class="font-mono text-sm tracking-widest text-accent nav-logo" data-magnetic>
@@ -146,12 +81,11 @@
   </div>
 </header>
 
-<!-- HERO -->
-<section id="home" class="relative min-h-screen flex flex-col px-6 md:px-10 pt-24 md:pt-32 pb-24">
-  <div class="max-w-7xl mx-auto w-full md:my-auto">
+<section id="home" class="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-10 pt-32 pb-20">
+  <div class="max-w-7xl mx-auto w-full">
 
-    <p class="font-mono text-accent text-xs md:text-sm tracking-[0.3em] uppercase mb-6 overflow-hidden">
-      <span class="reveal-line inline-block">// initializing_profile.sh</span>
+    <p class="font-mono text-accent text-xs md:text-sm tracking-[0.3em] uppercase mb-6">
+      <span class="inline-block">// initializing_profile.sh</span>
     </p>
 
     <h1 class="font-sans font-black leading-[0.95] tracking-tight text-[13vw] md:text-[7.5vw] mb-8">
@@ -190,7 +124,6 @@
   </div>
 </section>
 
-<!-- EXPERIENCE -->
 <section id="experience" class="relative px-6 md:px-10 py-32 border-t border-hairline">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-20 reveal-up">
@@ -198,12 +131,11 @@
         <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">01 / Career Log</p>
         <h2 class="font-sans font-bold text-4xl md:text-6xl tracking-tight">Experience</h2>
       </div>
-      <p class="font-mono text-xs text-muted hidden md:block">./var/log/experience.log</p>
+        <p class="font-mono text-xs text-muted hidden md:block">./var/log/experience.log</p>
     </div>
 
     <div class="space-y-6">
 
-      <!-- Umniah -->
       <article class="exp-card reveal-up group">
         <div class="exp-card-inner">
           <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
@@ -240,7 +172,6 @@
         </div>
       </article>
 
-      <!-- NeuroLink -->
       <article class="exp-card reveal-up group">
         <div class="exp-card-inner">
           <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
@@ -290,7 +221,6 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects" class="relative px-6 md:px-10 py-32 border-t border-hairline">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-20 reveal-up">
@@ -373,7 +303,6 @@
   </div>
 </section>
 
-<!-- EDUCATION -->
 <section id="education" class="relative px-6 md:px-10 py-32 border-t border-hairline">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-20 reveal-up">
@@ -426,7 +355,6 @@
   </div>
 </section>
 
-<!-- CONTACT / FOOTER -->
 <footer id="contact" class="relative px-6 md:px-10 pt-32 pb-10 border-t border-hairline overflow-hidden">
   <div class="max-w-7xl mx-auto">
     <div class="reveal-up mb-20">
