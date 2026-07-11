@@ -59,6 +59,30 @@
 
 <!-- FANCY, AESTHETIC FAVICON -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<style>
+  /* Mobile hero spacing fix: min-h-screen + justify-center creates
+     large, uneven gaps on mobile due to dynamic viewport height
+     (browser chrome resizing) and the fixed pt-24 offset. Using
+     100svh (small viewport height) locks to the stable visible
+     area, and swapping justify-center for a tighter flex flow
+     removes the oversized gaps above/below content on small screens. */
+  @media (max-width: 767px) {
+    #home {
+      min-height: 100svh;
+      justify-content: flex-start;
+      padding-top: 6.5rem;
+      padding-bottom: 2rem;
+    }
+    #home .scroll-cue {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      transform: none;
+      margin-top: 3rem;
+    }
+  }
+</style>
 </head>
 <body class="bg-bg text-white font-sans overflow-x-hidden">
 
