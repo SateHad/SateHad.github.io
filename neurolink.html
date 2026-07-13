@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>sate@root:~# | NeuroLink Architecture</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#050505',
+          panel: '#0b0c0d',
+          hairline: '#1f2224',
+          accent: '#39ff8f',
+          muted: '#8b9296',
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          sans: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #050505;
+  }
+  
+/* The designated workspace below your header */
+  #viewport-wrapper {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 80px);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 24px; /* Adds an exact, uniform gap around the edges */
+    box-sizing: border-box;
+  }
+
+  /* Dynamically scales to fill the padded wrapper completely */
+  #architecture-canvas {
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid #1f2224;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    cursor: grab;
+    object-fit: contain;
+  }
+  
+  #architecture-canvas:active {
+    cursor: grabbing;
+  }
+</style>
+</head>
+<body class="bg-bg text-white font-sans antialiased">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise-overlay"></div>
+<div class="grid-bg"></div>
+
+<header class="fixed top-0 left-0 w-full h-[80px] border-b border-hairline bg-bg/80 backdrop-blur-md z-50 flex items-center justify-between px-6 md:px-10">
+  <a href="index.html" class="font-mono text-xs tracking-widest uppercase text-muted hover:text-accent border border-hairline bg-panel/80 px-4 py-2 rounded-md transition-colors" data-magnetic>
+    ← Return to Terminal
+  </a>
+  <div class="font-mono text-[10px] text-muted/80 tracking-widest hidden sm:flex items-center gap-2 bg-panel/60 border border-hairline/50 px-3 py-1.5 rounded-md">
+    <span class="status-dot"></span> INTERACTIVE CANVAS
+  </div>
+</header>
+
+<main id="viewport-wrapper">
+  <img id="architecture-canvas" src="architecture.png" alt="NeuroLink Production RAG Pipeline Blueprint" />
+</main>
+
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-panel/80 border border-hairline p-1.5 rounded-lg backdrop-blur-md shadow-2xl">
+  <button id="zoom-out-ctrl" class="w-10 h-10 font-mono text-base text-muted hover:text-accent hover:border-accent/40 border border-transparent rounded-md transition-all flex items-center justify-center bg-black/40">-</button>
+  <div class="w-px h-4 bg-hairline"></div>
+  <button id="reset-ctrl" class="px-3 h-10 font-mono text-xs tracking-widest text-muted hover:text-accent hover:border-accent/40 border border-transparent rounded-md transition-all flex items-center justify-center bg-black/40">RESET</button>
+  <div class="w-px h-4 bg-hairline"></div>
+  <button id="zoom-in-ctrl" class="w-10 h-10 font-mono text-base text-muted hover:text-accent hover:border-accent/40 border border-transparent rounded-md transition-all flex items-center justify-center bg-black/40">+</button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Custom Cursor Logic
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    
+    if (dot && ring && !window.matchMedia('(max-width: 768px)').matches) {
+      const setDotX = gsap.quickTo(dot, 'x', { duration: 0.1, ease: 'power3.out' });
+      const setDotY = gsap.quickTo(dot, 'y', { duration: 0.1, ease: 'power3.out' });
+      const setRingX = gsap.quickTo(ring, 'x', { duration: 0.5, ease: 'power3.out' });
+      const setRingY = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3.out' });
+
+      window.addEventListener('mousemove', (e) => {
+        setDotX(e.clientX);
+        setDotY(e.clientY);
+        setRingX(e.clientX);
+        setRingY(e.clientY);
+      });
+
+      document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('is-hover'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'));
+      });
+    }
+
+    // High Performance Panzoom Setup (Fixed)
+    const elem = document.getElementById('architecture-canvas');
+    const wrapper = document.getElementById('viewport-wrapper');
+    
+    const pz = Panzoom(elem, {
+      maxScale: 6,
+      minScale: 0.3, 
+      step: 0.2
+      // Removed "contain: 'outside'" so it respects your CSS boundaries natively
+    });
+
+    wrapper.addEventListener('wheel', pz.zoomWithWheel);
+    document.getElementById('zoom-in-ctrl').addEventListener('click', pz.zoomIn);
+    document.getElementById('zoom-out-ctrl').addEventListener('click', pz.zoomOut);
+    
+    // Reset forces the image back to its native CSS size
+    document.getElementById('reset-ctrl').addEventListener('click', () => {
+      pz.reset();
+    });
+  });
+</script>
+</body>
+</html>
