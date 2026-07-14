@@ -1,6 +1,6 @@
 /* ---------- Base ---------- */
 * {
-  cursor: none;
+  cursor: none !important; /* The !important tag forces the browser to obey */
 }
 
 html {
@@ -17,8 +17,10 @@ body {
   color: #050505;
 }
 
-a, button {
+/* Force hide system cursor on all interactive elements, images, and wrappers */
+a, button, img, canvas, svg, [draggable] {
   -webkit-tap-highlight-color: transparent;
+  cursor: none !important;
 }
 
 /* ---------- Custom cursor ---------- */
