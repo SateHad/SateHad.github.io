@@ -225,11 +225,6 @@ section, header, footer {
 }
 .project-reveal {
   margin-top: auto;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.project-card:hover .project-reveal {
   opacity: 1;
   transform: translateY(0);
 }
