@@ -1,0 +1,24 @@
+[
+  {
+    "id": "omni-channel-rag",
+    "category": "Client work",
+    "status": "Deployed",
+    "title": "Omni-Channel RAG Engine",
+    "description": "A production routing pipeline ingesting real-time webhooks from Meta APIs, with stateful spam protection, localized context parsing via a Supabase vector store, and Postgres schemas for transaction tracking and dynamic human failover.",
+    "tags": ["n8n", "Supabase", "PostgreSQL", "Meta API", "OpenAI"],
+    "github": "https://github.com/SateHad/neurolink-rag-architecture",
+    "live": "neurolink.html",
+    "liveLabel": "View blueprint"
+  },
+  {
+    "id": "tac-workflow-backend",
+    "category": "TAC System",
+    "status": "Deployed",
+    "title": "TAC Workflow Backend",
+    "description": "A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows for Managed Services, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.",
+    "tags": ["PostgreSQL", "FastAPI", "Docker Compose"],
+    "github": "",
+    "live": "",
+    "liveLabel": "Internal — Umniah"
+  }
+]
