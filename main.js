@@ -1,57 +1,22 @@
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('year').textContent = new Date().getFullYear();
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  initCustomCursor();
   initMagnetic();
   initHeroIntro();
-  initScrambleText();
   initScrollReveals();
   initGpaBar();
   initExpCardTilt();
 });
 
 /* =========================================================
-   CUSTOM CURSOR
-========================================================= */
-function initCustomCursor() {
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  if (!dot || !ring) return;
-  if (window.matchMedia('(max-width: 768px)').matches) return;
-
-  const dotPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  const ringPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-  const setDotX = gsap.quickTo(dot, 'x', { duration: 0.1, ease: 'power3.out' });
-  const setDotY = gsap.quickTo(dot, 'y', { duration: 0.1, ease: 'power3.out' });
-  const setRingX = gsap.quickTo(ring, 'x', { duration: 0.5, ease: 'power3.out' });
-  const setRingY = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3.out' });
-
-  window.addEventListener('mousemove', (e) => {
-    setDotX(e.clientX);
-    setDotY(e.clientY);
-    setRingX(e.clientX);
-    setRingY(e.clientY);
-  });
-
-  const hoverTargets = 'a, button, [data-magnetic], [data-magnetic-card], .project-card, .exp-card';
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(hoverTargets)) ring.classList.add('is-hover');
-  });
-  document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(hoverTargets)) ring.classList.remove('is-hover');
-  });
-
-  document.addEventListener('mousedown', () => gsap.to(dot, { scale: 0.5, duration: 0.2 }));
-  document.addEventListener('mouseup', () => gsap.to(dot, { scale: 1, duration: 0.2 }));
-}
-
-/* =========================================================
    MAGNETIC HOVER (buttons, nav links, contact links)
 ========================================================= */
 function initMagnetic() {
+  if (window.matchMedia('(max-width: 768px)').matches) return;
+
   const magnets = document.querySelectorAll('[data-magnetic]');
 
   magnets.forEach((el) => {
@@ -98,73 +63,27 @@ function initMagnetic() {
    HERO INTRO TIMELINE
 ========================================================= */
 function initHeroIntro() {
+  gsap.set('.scroll-cue', { opacity: 0 });
+
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-  tl.to('.reveal-line', {
-      y: '0%',
-      duration: 1,
-      ease: 'power3.out',
-    })
-    .to('.hero-word', {
+  tl.to('.hero-word', {
       y: '0%',
       duration: 1.1,
       stagger: 0.12,
       ease: 'power4.out',
-    }, '-=0.6')
+    })
     .to('.hero-fade', {
       opacity: 1,
       y: 0,
       duration: 0.9,
       stagger: 0.15,
       ease: 'power3.out',
-    }, '-=0.5')
+    }, '-=0.6')
     .to('.scroll-cue', {
       opacity: 1,
       duration: 0.6,
     }, '-=0.3');
-
-  gsap.set('.scroll-cue', { opacity: 0 });
-}
-
-/* =========================================================
-   SCRAMBLE TEXT EFFECT (cyber-themed decode-in)
-========================================================= */
-function initScrambleText() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01#$%&';
-
-  document.querySelectorAll('[data-scramble]').forEach((el) => {
-    const finalText = el.textContent.trim();
-    el.textContent = '';
-
-    const chunks = finalText.split('');
-    const obj = { progress: 0 };
-
-    // Delay scramble start slightly after hero timeline kicks in
-    gsap.delayedCall(1.0, () => {
-      gsap.to(obj, {
-        progress: 1,
-        duration: 1.4,
-        ease: 'power1.inOut',
-        onUpdate: () => {
-          const revealCount = Math.floor(obj.progress * chunks.length);
-          let output = '';
-          for (let i = 0; i < chunks.length; i++) {
-            if (i < revealCount) {
-              output += chunks[i];
-            } else if (chunks[i] === ' ') {
-              output += ' ';
-            } else {
-              output += chars[Math.floor(Math.random() * chars.length)];
-            }
-          }
-          el.textContent = output;
-        },
-        onComplete: () => {
-          el.textContent = finalText;
-        },
-      });
-    });
-  });
 }
 
 /* =========================================================
@@ -175,6 +94,9 @@ function initScrollReveals() {
   const revealEls = gsap.utils.toArray('.reveal-up');
 
   revealEls.forEach((el) => {
+    // Skip elements handled by the dedicated cascades below
+    if (el.classList.contains('exp-card') || el.classList.contains('project-card')) return;
+
     gsap.to(el, {
       opacity: 1,
       y: 0,
@@ -188,7 +110,7 @@ function initScrollReveals() {
     });
   });
 
-  // Stagger the two experience cards slightly for a cascading feel
+  // Stagger the experience cards slightly for a cascading feel
   gsap.utils.toArray('.exp-card').forEach((card, i) => {
     gsap.fromTo(card,
       { opacity: 0, y: 60 },
@@ -264,25 +186,28 @@ function initScrollReveals() {
 }
 
 /* =========================================================
-   GPA PROGRESS BAR
+   GPA PROGRESS BARS
 ========================================================= */
 function initGpaBar() {
-  const bar = document.querySelector('.gpa-bar-fill');
-  if (!bar) return;
-  const target = parseFloat(bar.dataset.gpa) || 0;
+  const bars = document.querySelectorAll('.gpa-bar-fill');
+  if (!bars.length) return;
   const maxScale = 100; // percentage scale reference
 
-  ScrollTrigger.create({
-    trigger: bar,
-    start: 'top 90%',
-    once: true,
-    onEnter: () => {
-      gsap.to(bar, {
-        width: `${(target / maxScale) * 100}%`,
-        duration: 1.6,
-        ease: 'power3.out',
-      });
-    },
+  bars.forEach((bar) => {
+    const target = parseFloat(bar.dataset.gpa) || 0;
+
+    ScrollTrigger.create({
+      trigger: bar,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => {
+        gsap.to(bar, {
+          width: `${(target / maxScale) * 100}%`,
+          duration: 1.6,
+          ease: 'power3.out',
+        });
+      },
+    });
   });
 }
 
