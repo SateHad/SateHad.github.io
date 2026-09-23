@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sate Haddadin — All Projects</title>
+<meta name="description" content="Full project list — Sate Haddadin, Computer Engineering, GJU.">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#F7F6F2',
+          panel: '#FFFFFF',
+          hairline: '#E4E2DD',
+          accent: '#3B6FE0',
+          ink: '#14161A',
+          muted: '#6B7075',
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          serif: ['"Fraunces"', 'serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<link rel="stylesheet" href="style.css?v=3" />
+<link rel="icon" type="image/svg+xml" href="https://satehaddadin.com/favicon.svg">
+
+<style>
+  .field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: #6B7075;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .field-input {
+    width: 100%;
+    border: 1px solid #E4E2DD;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #14161A;
+    background: #F7F6F2;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .field-input:focus {
+    border-color: #3B6FE0;
+  }
+  textarea.field-input {
+    resize: vertical;
+    min-height: 72px;
+  }
+
+  .link-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .link-btn.is-active {
+    background: #14161A;
+    color: #F7F6F2;
+  }
+  .link-btn.is-active:hover {
+    background: #3B6FE0;
+  }
+  .link-btn.is-empty {
+    background: transparent;
+    color: #B8BABC;
+    border: 1px dashed #E4E2DD;
+    cursor: default;
+  }
+
+  .add-card {
+    border: 1px dashed #C9C6BF;
+    border-radius: 6px;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    cursor: pointer;
+    background: transparent;
+  }
+  .add-card:hover {
+    border-color: #3B6FE0;
+    background: rgba(59, 111, 224, 0.03);
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 22, 26, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+  }
+  .modal-panel {
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #E4E2DD;
+    max-width: 560px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+  }
+
+  .status-select {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .status-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #E4E2DD;
+    color: #6B7075;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .status-pill.is-selected {
+    border-color: #3B6FE0;
+    color: #3B6FE0;
+    background: rgba(59, 111, 224, 0.06);
+  }
+
+  .card-menu-btn {
+    color: #B8BABC;
+    transition: color 0.2s ease;
+  }
+  .card-menu-btn:hover {
+    color: #14161A;
+  }
+</style>
+</head>
+<body class="bg-bg text-ink font-serif overflow-x-hidden">
+
+<div class="grid-bg"></div>
+
+<header class="fixed top-0 left-0 w-full z-40 border-b border-hairline/70 backdrop-blur-md bg-bg/80">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+    <a href="index.html" class="font-mono text-xs tracking-wide text-muted hover:text-ink transition-colors" data-magnetic>
+      ← Back to portfolio
+    </a>
+    <span class="font-mono text-sm tracking-wide text-ink">All projects</span>
+  </div>
+</header>
+
+<main class="relative px-6 md:px-10 pt-32 pb-32">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="flex items-end justify-between mb-12 md:mb-16">
+      <div>
+        <p class="font-mono text-accent text-xs tracking-wide mb-4">Projects</p>
+        <h1 class="font-serif font-medium text-4xl md:text-6xl tracking-tight">Everything I've built</h1>
+      </div>
+    </div>
+
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Cards injected here by JS -->
+    </div>
+
+  </div>
+</main>
+
+<!-- Add / Edit modal -->
+<div id="project-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-panel">
+    <div class="flex items-center justify-between mb-6">
+      <h2 id="modal-title" class="font-serif font-medium text-2xl">Add project</h2>
+      <button id="modal-close" class="font-mono text-xs text-muted hover:text-ink">✕</button>
+    </div>
+
+    <form id="project-form" class="space-y-5">
+      <div>
+        <label class="field-label">Category label</label>
+        <input type="text" id="f-category" class="field-input" placeholder="e.g. Client work, Side project" />
+      </div>
+
+      <div>
+        <label class="field-label">Status</label>
+        <div class="status-select">
+          <span class="status-pill" data-status="Deployed">Deployed</span>
+          <span class="status-pill" data-status="In progress">In progress</span>
+          <span class="status-pill" data-status="TBD">TBD</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="field-label">Title</label>
+        <input type="text" id="f-title" class="field-input" placeholder="Project name" required />
+      </div>
+
+      <div>
+        <label class="field-label">Description</label>
+        <textarea id="f-description" class="field-input" placeholder="What it does, how it's built"></textarea>
+      </div>
+
+      <div>
+        <label class="field-label">Tags (comma-separated)</label>
+        <input type="text" id="f-tags" class="field-input" placeholder="e.g. PostgreSQL, FastAPI, Docker" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="field-label">GitHub link</label>
+          <input type="url" id="f-github" class="field-input" placeholder="https://github.com/..." />
+        </div>
+        <div>
+          <label class="field-label">Live / demo link</label>
+          <input type="url" id="f-live" class="field-input" placeholder="https://..." />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-4">
+        <button type="button" id="modal-delete" class="font-mono text-xs text-muted hover:text-red-600 transition-colors" style="display: none;">
+          Delete project
+        </button>
+        <div class="flex items-center gap-3 ml-auto">
+          <button type="button" id="modal-cancel" class="font-mono text-xs text-muted hover:text-ink px-4 py-2">Cancel</button>
+          <button type="submit" class="primary-btn font-mono text-xs">
+            <span id="modal-submit-label">Add project</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   Storage layer
+   -----------------------------------------------------------
+   This site is a static deployment (no server), so project
+   data is kept in the visitor's own browser via localStorage.
+   That means edits made here only persist on the device/browser
+   they were made on — they will not appear for other visitors
+   and won't sync across your own devices.
+
+   Sate: since your stack is already Postgres + FastAPI + Docker,
+   the natural upgrade path is to swap the three functions below
+   (loadProjects / saveProjects) for calls to a small API you host
+   (e.g. GET/POST /api/projects) backed by that same Postgres
+   instance. Everything else in this file — rendering, the modal,
+   validation — stays the same.
+========================================================= */
+
+const STORAGE_KEY = 'sate_portfolio_projects_v1';
+
+const DEFAULT_PROJECTS = [
+  {
+    id: 'omni-channel-rag',
+    category: 'Client work',
+    status: 'Deployed',
+    title: 'Omni-Channel RAG Engine',
+    description: 'A production routing pipeline ingesting real-time webhooks from Meta APIs, with stateful spam protection, localized context parsing via a Supabase vector store, and Postgres schemas for transaction tracking and dynamic human failover.',
+    tags: ['n8n', 'Supabase', 'PostgreSQL', 'Meta API', 'OpenAI'],
+    github: 'https://github.com/SateHad/neurolink-rag-architecture',
+    live: 'neurolink.html',
+    liveLabel: 'View blueprint'
+  },
+  {
+    id: 'tac-workflow-backend',
+    category: 'TAC System',
+    status: 'Deployed',
+    title: 'TAC Workflow Backend',
+    description: 'A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows for Managed Services, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.',
+    tags: ['PostgreSQL', 'FastAPI', 'Docker Compose'],
+    github: '',
+    live: '',
+    liveLabel: 'Internal — Umniah'
+  }
+];
+
+function loadProjects() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      saveProjects(DEFAULT_PROJECTS);
+      return DEFAULT_PROJECTS.slice();
+    }
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error('Failed to load projects:', e);
+    return DEFAULT_PROJECTS.slice();
+  }
+}
+
+function saveProjects(projects) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+  } catch (e) {
+    console.error('Failed to save projects:', e);
+  }
+}
+
+/* =========================================================
+   Rendering
+========================================================= */
+
+let projects = loadProjects();
+let editingId = null;
+let selectedStatus = 'Deployed';
+
+const grid = document.getElementById('projects-grid');
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function renderCard(project) {
+  const tags = (project.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+
+  const githubBtn = project.github
+    ? `<a href="${escapeHtml(project.github)}" target="_blank" rel="noopener" class="link-btn is-active">GitHub ↗</a>`
+    : `<span class="link-btn is-empty">GitHub — not added</span>`;
+
+  const liveBtn = project.live
+    ? `<a href="${escapeHtml(project.live)}" ${project.live.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} class="link-btn is-active">${escapeHtml(project.liveLabel || 'View')} ↗</a>`
+    : (project.liveLabel
+        ? `<span class="link-btn is-empty">${escapeHtml(project.liveLabel)}</span>`
+        : `<span class="link-btn is-empty">Live link — not added</span>`);
+
+  return `
+    <div class="project-card" data-id="${project.id}">
+      <div class="project-card-inner">
+        <div class="flex items-center justify-between mb-8">
+          <span class="font-mono text-[10px] text-muted tracking-wide">${escapeHtml(project.category || 'Project')}</span>
+          <div class="flex items-center gap-3">
+            <span class="font-mono text-[10px] text-accent tracking-wide">${escapeHtml(project.status || 'TBD')}</span>
+            <button class="card-menu-btn edit-btn font-mono text-xs" data-id="${project.id}" title="Edit project">✎</button>
+          </div>
+        </div>
+        <h3 class="font-serif font-medium text-xl mb-3 text-ink">${escapeHtml(project.title || 'Untitled project')}</h3>
+        <p class="font-mono text-xs text-muted leading-relaxed mb-8">${escapeHtml(project.description || '')}</p>
+        <div class="mt-auto">
+          <div class="flex flex-wrap gap-2 mb-6">${tags}</div>
+          <div class="flex items-center gap-3 flex-wrap">${githubBtn}${liveBtn}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAddCard() {
+  return `
+    <div class="add-card" id="add-project-trigger">
+      <div class="text-center">
+        <div class="font-mono text-3xl text-muted mb-2">+</div>
+        <p class="font-mono text-xs text-muted tracking-wide">Add project</p>
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  grid.innerHTML = projects.map(renderCard).join('') + renderAddCard();
+
+  document.getElementById('add-project-trigger').addEventListener('click', () => openModal());
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal(btn.dataset.id);
+    });
+  });
+
+  if (window.gsap) {
+    gsap.fromTo('#projects-grid .project-card, #projects-grid .add-card',
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power3.out' }
+    );
+  }
+}
+
+/* =========================================================
+   Modal
+========================================================= */
+
+const modal = document.getElementById('project-modal');
+const form = document.getElementById('project-form');
+
+function openModal(id) {
+  editingId = id || null;
+  form.reset();
+  selectedStatus = 'Deployed';
+  document.querySelectorAll('.status-pill').forEach(p => p.classList.remove('is-selected'));
+
+  if (editingId) {
+    const p = projects.find(p => p.id === editingId);
+    document.getElementById('modal-title').textContent = 'Edit project';
+    document.getElementById('modal-submit-label').textContent = 'Save changes';
+    document.getElementById('modal-delete').style.display = 'inline-block';
+    document.getElementById('f-category').value = p.category || '';
+    document.getElementById('f-title').value = p.title || '';
+    document.getElementById('f-description').value = p.description || '';
+    document.getElementById('f-tags').value = (p.tags || []).join(', ');
+    document.getElementById('f-github').value = p.github || '';
+    document.getElementById('f-live').value = p.live || '';
+    selectedStatus = p.status || 'Deployed';
+  } else {
+    document.getElementById('modal-title').textContent = 'Add project';
+    document.getElementById('modal-submit-label').textContent = 'Add project';
+    document.getElementById('modal-delete').style.display = 'none';
+  }
+
+  document.querySelector(`.status-pill[data-status="${selectedStatus}"]`)?.classList.add('is-selected');
+  modal.style.display = 'flex';
+}
+
+function closeModal() {
+  modal.style.display = 'none';
+  editingId = null;
+}
+
+document.querySelectorAll('.status-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.status-pill').forEach(p => p.classList.remove('is-selected'));
+    pill.classList.add('is-selected');
+    selectedStatus = pill.dataset.status;
+  });
+});
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-cancel').addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+
+document.getElementById('modal-delete').addEventListener('click', () => {
+  if (!editingId) return;
+  if (!confirm('Delete this project? This can\'t be undone.')) return;
+  projects = projects.filter(p => p.id !== editingId);
+  saveProjects(projects);
+  closeModal();
+  render();
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const tags = document.getElementById('f-tags').value
+    .split(',')
+    .map(t => t.trim())
+    .filter(Boolean);
+
+  const data = {
+    category: document.getElementById('f-category').value.trim(),
+    status: selectedStatus,
+    title: document.getElementById('f-title').value.trim(),
+    description: document.getElementById('f-description').value.trim(),
+    tags,
+    github: document.getElementById('f-github').value.trim(),
+    live: document.getElementById('f-live').value.trim(),
+  };
+
+  if (!data.title) return;
+
+  if (editingId) {
+    const idx = projects.findIndex(p => p.id === editingId);
+    if (idx > -1) projects[idx] = { ...projects[idx], ...data };
+  } else {
+    data.id = 'project-' + Date.now();
+    projects.push(data);
+  }
+
+  saveProjects(projects);
+  closeModal();
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
