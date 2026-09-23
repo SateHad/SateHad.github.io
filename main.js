@@ -70,8 +70,8 @@ function initHeroIntro() {
       y: '0%',
       duration: 1.1,
       stagger: 0.12,
-      ease: 'power4.out',
-      // clearProps: 'transform',
+      ease: 'power4.out'
+      // Note: Do NOT add clearProps: 'transform' back in here.
     })
     .to('.hero-fade', {
       opacity: 1,
