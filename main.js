@@ -71,7 +71,7 @@ function initHeroIntro() {
       duration: 1.1,
       stagger: 0.12,
       ease: 'power4.out',
-      clearProps: 'transform',
+      // clearProps: 'transform',
     })
     .to('.hero-fade', {
       opacity: 1,
