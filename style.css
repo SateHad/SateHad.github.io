@@ -6,6 +6,10 @@ html {
 body {
   position: relative;
   background: #F7F6F2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 ::selection {
@@ -258,4 +262,15 @@ section, header, footer {
 }
 .hero-word {
   transform: translateY(110%);
+  backface-visibility: hidden;
+}
+
+/* Prevent blur from sub-pixel transforms on hover/animated elements */
+.exp-card,
+.project-card,
+.edu-card,
+.contact-link,
+.hero-word {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
