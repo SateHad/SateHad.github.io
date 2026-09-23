@@ -72,6 +72,7 @@ function initHeroIntro() {
       duration: 1.1,
       stagger: 0.12,
       ease: 'power4.out',
+      clearProps: 'transform',
     })
     .to('.hero-fade', {
       opacity: 1,
@@ -102,6 +103,7 @@ function initScrollReveals() {
       y: 0,
       duration: 1,
       ease: 'power3.out',
+      force3D: false,
       scrollTrigger: {
         trigger: el,
         start: 'top 88%',
@@ -120,6 +122,7 @@ function initScrollReveals() {
         duration: 1,
         delay: i * 0.1,
         ease: 'power3.out',
+        force3D: false,
         scrollTrigger: {
           trigger: card,
           start: 'top 90%',
@@ -140,6 +143,7 @@ function initScrollReveals() {
         duration: 0.9,
         delay: i * 0.12,
         ease: 'power3.out',
+        force3D: false,
         scrollTrigger: {
           trigger: card,
           start: 'top 90%',
