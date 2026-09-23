@@ -153,6 +153,47 @@
   .card-menu-btn:hover {
     color: #14161A;
   }
+
+  /* Hidden admin trigger: a plain dot, not an inviting button */
+  #admin-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #E4E2DD;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  #admin-dot:hover {
+    background: #C9C6BF;
+  }
+  #admin-dot.is-unlocked {
+    background: #3B6FE0;
+  }
+
+  .admin-only {
+    display: none;
+  }
+  body.is-admin .admin-only {
+    display: inline-flex;
+  }
+  body.is-admin .add-card {
+    display: flex;
+  }
+  .add-card {
+    display: none;
+  }
+
+  #save-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #6B7075;
+  }
+  #save-status.is-error {
+    color: #B3261E;
+  }
+  #save-status.is-ok {
+    color: #3B6FE0;
+  }
 </style>
 </head>
 <body class="bg-bg text-ink font-serif overflow-x-hidden">
@@ -164,7 +205,11 @@
     <a href="index.html" class="font-mono text-xs tracking-wide text-muted hover:text-ink transition-colors" data-magnetic>
       ← Back to portfolio
     </a>
-    <span class="font-mono text-sm tracking-wide text-ink">All projects</span>
+    <div class="flex items-center gap-4">
+      <span id="save-status"></span>
+      <span class="font-mono text-sm tracking-wide text-ink">All projects</span>
+      <span id="admin-dot" title=""></span>
+    </div>
   </div>
 </header>
 
@@ -178,12 +223,34 @@
       </div>
     </div>
 
-    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div id="loading-state" class="font-mono text-xs text-muted">Loading projects…</div>
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" style="display: none;">
       <!-- Cards injected here by JS -->
     </div>
 
   </div>
 </main>
+
+<!-- Admin unlock modal -->
+<div id="auth-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-panel" style="max-width: 440px;">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="font-serif font-medium text-2xl">Admin unlock</h2>
+      <button id="auth-close" class="font-mono text-xs text-muted hover:text-ink">✕</button>
+    </div>
+    <p class="font-mono text-xs text-muted leading-relaxed mb-6">
+      Paste a GitHub personal access token scoped to this repo. It's kept only in this
+      browser tab's session and is sent directly to GitHub's API — never stored in the site itself.
+    </p>
+    <label class="field-label">Personal access token</label>
+    <input type="password" id="auth-token-input" class="field-input mb-4" placeholder="ghp_..." autocomplete="off" />
+    <div id="auth-error" class="font-mono text-xs mb-4" style="color: #B3261E; display: none;"></div>
+    <div class="flex items-center justify-end gap-3">
+      <button type="button" id="auth-cancel" class="font-mono text-xs text-muted hover:text-ink px-4 py-2">Cancel</button>
+      <button type="button" id="auth-submit" class="primary-btn font-mono text-xs">Unlock</button>
+    </div>
+  </div>
+</div>
 
 <!-- Add / Edit modal -->
 <div id="project-modal" class="modal-overlay" style="display: none;">
@@ -251,76 +318,119 @@
 
 <script>
 /* =========================================================
-   Storage layer
-   -----------------------------------------------------------
-   This site is a static deployment (no server), so project
-   data is kept in the visitor's own browser via localStorage.
-   That means edits made here only persist on the device/browser
-   they were made on — they will not appear for other visitors
-   and won't sync across your own devices.
-
-   Sate: since your stack is already Postgres + FastAPI + Docker,
-   the natural upgrade path is to swap the three functions below
-   (loadProjects / saveProjects) for calls to a small API you host
-   (e.g. GET/POST /api/projects) backed by that same Postgres
-   instance. Everything else in this file — rendering, the modal,
-   validation — stays the same.
+   Config — fill these in for your repo
 ========================================================= */
+const GH_OWNER = 'SateHad';           // your GitHub username
+const GH_REPO = 'satehaddadin.com';   // the repo that this site deploys from
+const GH_BRANCH = 'main';             // the branch GitHub Pages serves
+const GH_FILE_PATH = 'projects.json'; // path to the data file in that repo
 
-const STORAGE_KEY = 'sate_portfolio_projects_v1';
+/* =========================================================
+   Read path — works for every visitor, no auth needed
+========================================================= */
+let projects = [];
+let fileSha = null; // needed by GitHub's API to update the file
 
-const DEFAULT_PROJECTS = [
-  {
-    id: 'omni-channel-rag',
-    category: 'Client work',
-    status: 'Deployed',
-    title: 'Omni-Channel RAG Engine',
-    description: 'A production routing pipeline ingesting real-time webhooks from Meta APIs, with stateful spam protection, localized context parsing via a Supabase vector store, and Postgres schemas for transaction tracking and dynamic human failover.',
-    tags: ['n8n', 'Supabase', 'PostgreSQL', 'Meta API', 'OpenAI'],
-    github: 'https://github.com/SateHad/neurolink-rag-architecture',
-    live: 'neurolink.html',
-    liveLabel: 'View blueprint'
-  },
-  {
-    id: 'tac-workflow-backend',
-    category: 'TAC System',
-    status: 'Deployed',
-    title: 'TAC Workflow Backend',
-    description: 'A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows for Managed Services, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.',
-    tags: ['PostgreSQL', 'FastAPI', 'Docker Compose'],
-    github: '',
-    live: '',
-    liveLabel: 'Internal — Umniah'
-  }
-];
-
-function loadProjects() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      saveProjects(DEFAULT_PROJECTS);
-      return DEFAULT_PROJECTS.slice();
-    }
-    return JSON.parse(raw);
-  } catch (e) {
-    console.error('Failed to load projects:', e);
-    return DEFAULT_PROJECTS.slice();
-  }
+async function fetchProjects() {
+  // Cache-bust so visitors always see the latest committed data
+  const res = await fetch(`projects.json?t=${Date.now()}`);
+  projects = await res.json();
 }
 
-function saveProjects(projects) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-  } catch (e) {
-    console.error('Failed to save projects:', e);
+/* =========================================================
+   Admin/auth — token lives only in sessionStorage
+========================================================= */
+const TOKEN_KEY = 'sate_gh_token';
+
+function getToken() {
+  return sessionStorage.getItem(TOKEN_KEY);
+}
+function setToken(t) {
+  sessionStorage.setItem(TOKEN_KEY, t);
+}
+function clearToken() {
+  sessionStorage.removeItem(TOKEN_KEY);
+}
+function isAdmin() {
+  return !!getToken();
+}
+
+async function verifyToken(token) {
+  // A real check against the GitHub API — confirms the token works
+  // and can access this specific repo before we call it "unlocked".
+  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`, {
+    headers: { Authorization: `token ${token}` }
+  });
+  if (!res.ok) throw new Error('Token rejected or repo not accessible.');
+  const data = await res.json();
+  if (!data.permissions || !data.permissions.push) {
+    throw new Error('Token does not have write access to this repo.');
+  }
+  return true;
+}
+
+function enterAdminMode() {
+  document.body.classList.add('is-admin');
+  document.getElementById('admin-dot').classList.add('is-unlocked');
+}
+function exitAdminMode() {
+  document.body.classList.remove('is-admin');
+  document.getElementById('admin-dot').classList.remove('is-unlocked');
+  clearToken();
+}
+
+/* =========================================================
+   Writing changes back to GitHub
+========================================================= */
+async function commitProjects(updatedProjects, commitMessage) {
+  const token = getToken();
+  if (!token) throw new Error('Not authenticated.');
+
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(updatedProjects, null, 2))));
+
+  const res = await fetch(
+    `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE_PATH}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: commitMessage,
+        content,
+        sha: fileSha,
+        branch: GH_BRANCH,
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Commit failed.');
+  }
+
+  const data = await res.json();
+  fileSha = data.content.sha; // update sha for the next write
+  projects = updatedProjects;
+}
+
+async function fetchFileSha() {
+  // Needed so GitHub knows we're editing the current version of the file
+  const token = getToken();
+  const res = await fetch(
+    `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE_PATH}?ref=${GH_BRANCH}`,
+    { headers: token ? { Authorization: `token ${token}` } : {} }
+  );
+  if (res.ok) {
+    const data = await res.json();
+    fileSha = data.sha;
   }
 }
 
 /* =========================================================
    Rendering
 ========================================================= */
-
-let projects = loadProjects();
 let editingId = null;
 let selectedStatus = 'Deployed';
 
@@ -352,7 +462,7 @@ function renderCard(project) {
           <span class="font-mono text-[10px] text-muted tracking-wide">${escapeHtml(project.category || 'Project')}</span>
           <div class="flex items-center gap-3">
             <span class="font-mono text-[10px] text-accent tracking-wide">${escapeHtml(project.status || 'TBD')}</span>
-            <button class="card-menu-btn edit-btn font-mono text-xs" data-id="${project.id}" title="Edit project">✎</button>
+            <button class="card-menu-btn edit-btn admin-only font-mono text-xs" data-id="${project.id}" title="Edit project">✎</button>
           </div>
         </div>
         <h3 class="font-serif font-medium text-xl mb-3 text-ink">${escapeHtml(project.title || 'Untitled project')}</h3>
@@ -378,6 +488,8 @@ function renderAddCard() {
 }
 
 function render() {
+  document.getElementById('loading-state').style.display = 'none';
+  grid.style.display = 'grid';
   grid.innerHTML = projects.map(renderCard).join('') + renderAddCard();
 
   document.getElementById('add-project-trigger').addEventListener('click', () => openModal());
@@ -389,7 +501,7 @@ function render() {
   });
 
   if (window.gsap) {
-    gsap.fromTo('#projects-grid .project-card, #projects-grid .add-card',
+    gsap.fromTo('#projects-grid .project-card',
       { opacity: 0, y: 24 },
       { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power3.out' }
     );
@@ -397,9 +509,60 @@ function render() {
 }
 
 /* =========================================================
-   Modal
+   Save status indicator
 ========================================================= */
+function setSaveStatus(text, type) {
+  const el = document.getElementById('save-status');
+  el.textContent = text;
+  el.className = type ? `is-${type}` : '';
+  if (type === 'ok') {
+    setTimeout(() => { el.textContent = ''; el.className = ''; }, 2500);
+  }
+}
 
+/* =========================================================
+   Admin unlock modal
+========================================================= */
+const authModal = document.getElementById('auth-modal');
+const adminDot = document.getElementById('admin-dot');
+
+adminDot.addEventListener('click', () => {
+  if (isAdmin()) {
+    if (confirm('Exit admin mode?')) exitAdminMode();
+    return;
+  }
+  document.getElementById('auth-token-input').value = '';
+  document.getElementById('auth-error').style.display = 'none';
+  authModal.style.display = 'flex';
+});
+
+document.getElementById('auth-close').addEventListener('click', () => authModal.style.display = 'none');
+document.getElementById('auth-cancel').addEventListener('click', () => authModal.style.display = 'none');
+authModal.addEventListener('click', (e) => { if (e.target === authModal) authModal.style.display = 'none'; });
+
+document.getElementById('auth-submit').addEventListener('click', async () => {
+  const input = document.getElementById('auth-token-input');
+  const errorEl = document.getElementById('auth-error');
+  const token = input.value.trim();
+  if (!token) return;
+
+  errorEl.style.display = 'none';
+  try {
+    setToken(token);
+    await verifyToken(token);
+    await fetchFileSha();
+    enterAdminMode();
+    authModal.style.display = 'none';
+  } catch (err) {
+    clearToken();
+    errorEl.textContent = err.message || 'Could not verify token.';
+    errorEl.style.display = 'block';
+  }
+});
+
+/* =========================================================
+   Add/Edit modal
+========================================================= */
 const modal = document.getElementById('project-modal');
 const form = document.getElementById('project-form');
 
@@ -446,20 +609,26 @@ document.querySelectorAll('.status-pill').forEach(pill => {
 
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-cancel').addEventListener('click', closeModal);
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeModal();
-});
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-document.getElementById('modal-delete').addEventListener('click', () => {
+document.getElementById('modal-delete').addEventListener('click', async () => {
   if (!editingId) return;
-  if (!confirm('Delete this project? This can\'t be undone.')) return;
-  projects = projects.filter(p => p.id !== editingId);
-  saveProjects(projects);
+  if (!confirm("Delete this project? This can't be undone.")) return;
+
+  const updated = projects.filter(p => p.id !== editingId);
   closeModal();
-  render();
+  setSaveStatus('Saving…');
+  try {
+    await commitProjects(updated, `Delete project: ${editingId}`);
+    setSaveStatus('Saved ✓', 'ok');
+    render();
+  } catch (err) {
+    setSaveStatus('Save failed', 'error');
+    alert('Could not save: ' + err.message);
+  }
 });
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const tags = document.getElementById('f-tags').value
@@ -479,20 +648,45 @@ form.addEventListener('submit', (e) => {
 
   if (!data.title) return;
 
+  let updated;
+  let message;
   if (editingId) {
-    const idx = projects.findIndex(p => p.id === editingId);
-    if (idx > -1) projects[idx] = { ...projects[idx], ...data };
+    updated = projects.map(p => p.id === editingId ? { ...p, ...data } : p);
+    message = `Edit project: ${data.title}`;
   } else {
     data.id = 'project-' + Date.now();
-    projects.push(data);
+    updated = [...projects, data];
+    message = `Add project: ${data.title}`;
   }
 
-  saveProjects(projects);
   closeModal();
-  render();
+  setSaveStatus('Saving…');
+  try {
+    await commitProjects(updated, message);
+    setSaveStatus('Saved ✓', 'ok');
+    render();
+  } catch (err) {
+    setSaveStatus('Save failed', 'error');
+    alert('Could not save: ' + err.message);
+  }
 });
 
-render();
+/* =========================================================
+   Init
+========================================================= */
+(async function init() {
+  await fetchProjects();
+  if (isAdmin()) {
+    try {
+      await verifyToken(getToken());
+      await fetchFileSha();
+      enterAdminMode();
+    } catch {
+      clearToken();
+    }
+  }
+  render();
+})();
 </script>
 
 </body>
