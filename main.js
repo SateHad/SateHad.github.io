@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroIntro();
   initScrollReveals();
   initGpaBar();
-  initExpCardTilt();
 });
 
 /* =========================================================
@@ -211,33 +210,6 @@ function initGpaBar() {
           ease: 'power3.out',
         });
       },
-    });
-  });
-}
-
-/* =========================================================
-   SUBTLE 3D TILT ON EXPERIENCE CARDS
-========================================================= */
-function initExpCardTilt() {
-  if (window.matchMedia('(max-width: 768px)').matches) return;
-
-  document.querySelectorAll('.exp-card').forEach((card) => {
-    const rotateX = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
-    const rotateY = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
-
-    gsap.set(card, { transformPerspective: 1000, transformStyle: 'preserve-3d' });
-
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      rotateY(px * 4);
-      rotateX(-py * 4);
-    });
-
-    card.addEventListener('mouseleave', () => {
-      rotateX(0);
-      rotateY(0);
     });
   });
 }
