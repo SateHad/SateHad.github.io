@@ -18,5 +18,7 @@
     "description": "A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.",
     "tags": ["PostgreSQL", "FastAPI", "Docker Compose"],
     "github": "https://github.com/SateHad/tac-ticketing-backend",
+    "live": "",
+    "liveLabel": ""
   }
 ]
