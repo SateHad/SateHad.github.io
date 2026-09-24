@@ -10,15 +10,15 @@
     "live": "neurolink.html",
     "liveLabel": "View blueprint"
   },
-  {
+    {
     "id": "tac-workflow-backend",
     "category": "TAC System",
     "status": "Deployed",
     "title": "TAC Workflow Backend",
-    "description": "A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows for Managed Services, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.",
+    "description": "A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.",
     "tags": ["PostgreSQL", "FastAPI", "Docker Compose"],
-    "github": "",
+    "github": "https://github.com/SateHad/tac-ticketing-backend",
     "live": "",
-    "liveLabel": "Internal — Umniah"
+    "liveLabel": ""
   }
 ]
