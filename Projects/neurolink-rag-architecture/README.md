@@ -4,14 +4,14 @@ A production-ready Retrieval-Augmented Generation (RAG) routing pipeline enginee
 
 ![NeuroLink RAG Architecture](architecture.png)
 
-## 🧠 System Architecture
+## System Architecture
 
 1. **Ingestion & Verification:** Direct webhook endpoint configured to parse stateless incoming payloads from Meta Graph APIs. Includes automated security routines to authenticate connection signatures.
 2. **Stateful Session Isolation & Anti-Spam:** Employs a defensive execution branch to protect system resources and LLM token budgets. When active support is flagged, the session is temporarily isolated, suppressing automated model inferences for a two-hour window to maintain clean single-agent communication boundaries.
 3. **Vector Retrieval (RAG):** Utilizes Supabase (PostgreSQL + pgvector) to execute semantic similarity matches on ingested documentation pools, dynamically preserving context across multi-turn conversation frames.
 4. **Dynamic Human-in-the-Loop Failover:** Fallback modules scan model outputs for systemic exceptions or explicit user escalation requests. Triggers instant communication relays (via Gmail API) to notify human agents with complete state data.
 
-## 🛠 Tech Stack
+## Tech Stack
 * **Orchestration:** n8n (Self-Hosted/VPS or Cloud)
 * **Database & Vector Store:** Supabase (PostgreSQL with `pgvector`)
 * **AI & Embeddings:** OpenAI Models, Cohere Reranking
@@ -19,7 +19,7 @@ A production-ready Retrieval-Augmented Generation (RAG) routing pipeline enginee
 
 ---
 
-## 🚀 Deployment Guide
+## Deployment Guide
 
 This repository contains the workflow schema and architectural blueprint. To deploy this pipeline, you must configure your own infrastructure and supply your own API credentials.
 
