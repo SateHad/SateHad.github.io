@@ -223,6 +223,20 @@
   .readme-body th, .readme-body td { border: 1px solid #E4E2DD; padding: 8px 12px; text-align: left; }
   .readme-body blockquote { border-left: 3px solid #3B6FE0; padding-left: 16px; color: #6B7075; }
   .readme-body hr { border: 0; border-top: 1px solid #E4E2DD; margin: 2em 0; }
+
+  /* README viewer: never let wide content push the layout sideways */
+  .readme-body { min-width: 0; overflow-wrap: anywhere; }
+  .readme-body pre, .readme-body pre code { overflow-wrap: normal; }
+  .readme-body pre { max-width: 100%; }
+  .readme-body table { display: block; max-width: 100%; overflow-x: auto; }
+  .readme-body iframe, .readme-body video { max-width: 100%; }
+  #readme-modal .modal-panel { overflow-x: hidden; }
+  @media (max-width: 640px) {
+    #readme-modal { padding: 12px; }
+    #readme-modal .modal-panel { padding: 20px; max-height: 92vh; max-height: 92dvh; }
+    .readme-body h1 { font-size: 1.5rem; }
+    .readme-body h2 { font-size: 1.25rem; }
+  }
 </style>
 </head>
 <body class="bg-bg text-ink font-serif overflow-x-hidden">
@@ -737,6 +751,30 @@ function fixReadmeLinks(root, base) {
   });
 }
 
+// In-README links (#section) must scroll inside the overlay, not change the page hash
+// (a hash change would be read as "close the README"). marked doesn't add heading ids,
+// so build GitHub-style slugs ourselves.
+let readmeAnchors = new Map();
+
+function slugify(text) {
+  return text.trim().toLowerCase()
+    .replace(/[^\p{L}\p{N}\p{M}\s_-]/gu, '')
+    .replace(/\s/g, '-');
+}
+
+function addHeadingAnchors(root) {
+  readmeAnchors = new Map();
+  const seen = {};
+  root.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((h) => {
+    const base = slugify(h.textContent);
+    if (!base) return;
+    const n = seen[base] || 0;
+    seen[base] = n + 1;
+    readmeAnchors.set(n ? `${base}-${n}` : base, h);
+  });
+  root.querySelectorAll('[id]').forEach((el) => readmeAnchors.set(el.id.toLowerCase(), el));
+}
+
 async function openReadme(folder) {
   const myRequest = ++readmeRequest;
   readmeBody.innerHTML = '<p class="font-mono text-xs text-muted">Loading README…</p>';
@@ -754,7 +792,10 @@ async function openReadme(folder) {
     if (window.DOMPurify) html = DOMPurify.sanitize(html);
     readmeBody.innerHTML = html;
     fixReadmeLinks(readmeBody, base);
-    readmeModal.querySelector('.modal-panel').scrollTop = 0;
+    addHeadingAnchors(readmeBody);
+    const panel = readmeModal.querySelector('.modal-panel');
+    panel.scrollTop = 0;
+    panel.scrollLeft = 0;
   } catch (err) {
     if (myRequest !== readmeRequest) return;
     readmeBody.innerHTML =
@@ -785,6 +826,16 @@ function syncReadmeFromHash() {
   else if (readmeModal.style.display !== 'none') closeReadme();
 }
 window.addEventListener('hashchange', syncReadmeFromHash);
+
+readmeBody.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  e.preventDefault();
+  let id = a.getAttribute('href').slice(1);
+  try { id = decodeURIComponent(id); } catch {}
+  const target = readmeAnchors.get(id.toLowerCase());
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 document.getElementById('readme-close').addEventListener('click', closeReadme);
 readmeModal.addEventListener('click', (e) => { if (e.target === readmeModal) closeReadme(); });
