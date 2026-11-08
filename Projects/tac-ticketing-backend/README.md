@@ -10,7 +10,7 @@ Built with **FastAPI**, **PostgreSQL**, and **Docker Compose**. The key business
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?logo=tailwindcss&logoColor=white)
 
-![TAC Console dashboard](docs/images/console-tickets.png)
+![TAC Console dashboard](console-tickets.png)
 
 > Want the full endpoint reference, schema details, and SQL examples? See the [full README on GitHub](https://github.com/SateHad/tac-ticketing-backend#readme).
 ---
