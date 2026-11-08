@@ -359,6 +359,13 @@
         </div>
       </div>
 
+      <div>
+        <label class="field-label">README folder (from the Projects folder)</label>
+        <select id="f-repo" class="field-input">
+          <option value="">None (no README)</option>
+        </select>
+      </div>
+
       <div class="flex items-center justify-between pt-4">
         <button type="button" id="modal-delete" class="font-mono text-xs text-muted hover:text-red-600 transition-colors" style="display: none;">
           Delete project
@@ -638,8 +645,42 @@ document.getElementById('auth-submit').addEventListener('click', async () => {
 const modal = document.getElementById('project-modal');
 const form = document.getElementById('project-form');
 
+// Folder picker: lists the folders inside Projects/ so you choose instead of typing.
+// Only runs in the admin modal (needs the token you already use for saving); visitors never call it.
+let repoFolders = null;
+
+async function loadRepoFolders() {
+  if (repoFolders) return repoFolders;
+  const token = getToken();
+  const res = await fetch(
+    `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${README_ROOT}?ref=${GH_BRANCH}`,
+    { headers: token ? { Authorization: `token ${token}` } : {} }
+  );
+  if (!res.ok) throw new Error('Could not list folders.');
+  const items = await res.json();
+  repoFolders = items.filter((i) => i.type === 'dir').map((i) => i.name);
+  return repoFolders;
+}
+
+async function fillRepoSelect(current) {
+  const sel = document.getElementById('f-repo');
+  sel.innerHTML = '<option value="">None (no README)</option>';
+  let folders = [];
+  try { folders = await loadRepoFolders(); } catch { /* keep just None + current value */ }
+  const names = new Set(folders);
+  if (current) names.add(current); // never lose an existing value
+  [...names].sort().forEach((name) => {
+    const o = document.createElement('option');
+    o.value = name;
+    o.textContent = name;
+    sel.appendChild(o);
+  });
+  sel.value = current || '';
+}
+
 function openModal(id) {
   editingId = id || null;
+  let currentRepo = '';
   form.reset();
   selectedStatus = 'Deployed';
   document.querySelectorAll('.status-pill').forEach(p => p.classList.remove('is-selected'));
@@ -655,6 +696,7 @@ function openModal(id) {
     document.getElementById('f-tags').value = (p.tags || []).join(', ');
     document.getElementById('f-github').value = p.github || '';
     document.getElementById('f-live').value = p.live || '';
+    currentRepo = p.repo_folder || '';
     selectedStatus = p.status || 'Deployed';
   } else {
     document.getElementById('modal-title').textContent = 'Add project';
@@ -663,6 +705,7 @@ function openModal(id) {
   }
 
   document.querySelector(`.status-pill[data-status="${selectedStatus}"]`)?.classList.add('is-selected');
+  fillRepoSelect(currentRepo);
   modal.style.display = 'flex';
 }
 
@@ -716,6 +759,7 @@ form.addEventListener('submit', async (e) => {
     tags,
     github: document.getElementById('f-github').value.trim(),
     live: document.getElementById('f-live').value.trim(),
+    repo_folder: document.getElementById('f-repo').value,
   };
 
   if (!data.title) return;
@@ -723,9 +767,15 @@ form.addEventListener('submit', async (e) => {
   let updated;
   let message;
   if (editingId) {
-    updated = projects.map(p => p.id === editingId ? { ...p, ...data } : p);
+    updated = projects.map(p => {
+      if (p.id !== editingId) return p;
+      const merged = { ...p, ...data };
+      if (!merged.repo_folder) delete merged.repo_folder;
+      return merged;
+    });
     message = `Edit project: ${data.title}`;
   } else {
+    if (!data.repo_folder) delete data.repo_folder;
     data.id = 'project-' + Date.now();
     updated = [...projects, data];
     message = `Add project: ${data.title}`;
