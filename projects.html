@@ -197,7 +197,7 @@
     color: #3B6FE0;
   }
 
-    /* README viewer (scoped; affects only #readme-body) */
+  /* README viewer (scoped; affects only #readme-body) */
   .readme-body { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #14161A; }
   .readme-body > :first-child { margin-top: 0; }
   .readme-body h1, .readme-body h2, .readme-body h3, .readme-body h4 {
@@ -218,12 +218,11 @@
     background: #F7F6F2; border: 1px solid #E4E2DD; border-radius: 6px; padding: 16px; overflow-x: auto;
   }
   .readme-body pre code { background: none; border: 0; padding: 0; }
-  .readme-body img { max-width: 100%; height: auto; border-radius: 6px; }
+  .readme-body img { display: inline-block; vertical-align: middle; max-width: 100%; height: auto; border-radius: 6px; }
   .readme-body table { width: 100%; border-collapse: collapse; }
   .readme-body th, .readme-body td { border: 1px solid #E4E2DD; padding: 8px 12px; text-align: left; }
   .readme-body blockquote { border-left: 3px solid #3B6FE0; padding-left: 16px; color: #6B7075; }
   .readme-body hr { border: 0; border-top: 1px solid #E4E2DD; margin: 2em 0; }
-  
 </style>
 </head>
 <body class="bg-bg text-ink font-serif overflow-x-hidden">
@@ -351,7 +350,10 @@
   <div class="modal-panel" style="max-width: 860px;">
     <div class="flex items-center justify-between mb-6">
       <span class="font-mono text-xs text-muted tracking-wide">README.md</span>
-      <button id="readme-close" class="font-mono text-xs text-muted hover:text-ink">✕</button>
+      <div class="flex items-center gap-4">
+        <button id="readme-copy" class="font-mono text-xs text-muted hover:text-ink">Copy link</button>
+        <button id="readme-close" class="font-mono text-xs text-muted hover:text-ink">✕</button>
+      </div>
     </div>
     <div id="readme-body" class="readme-body"></div>
   </div>
@@ -714,6 +716,7 @@ form.addEventListener('submit', async (e) => {
 
 /* =========================================================
    README viewer — fetches Projects/<repo_folder>/README.md
+   Deep link: projects.html#<repo_folder>
 ========================================================= */
 const README_ROOT = 'Projects'; // case-sensitive on GitHub Pages
 const readmeModal = document.getElementById('readme-modal');
@@ -721,8 +724,6 @@ const readmeBody = document.getElementById('readme-body');
 let readmeRequest = 0;
 
 function fixReadmeLinks(root, base) {
-  // Relative images/links in a README resolve against the page, not the README,
-  // so rewrite them to point into the project's folder.
   root.querySelectorAll('img[src]').forEach((img) => {
     const src = img.getAttribute('src');
     if (!src.startsWith('#') && !src.startsWith('data:')) img.src = new URL(src, base).href;
@@ -747,7 +748,7 @@ async function openReadme(folder) {
     const res = await fetch(new URL('README.md', base));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const md = await res.text();
-    if (myRequest !== readmeRequest) return; // modal was closed or another card opened
+    if (myRequest !== readmeRequest) return;
 
     let html = marked.parse(md);
     if (window.DOMPurify) html = DOMPurify.sanitize(html);
@@ -766,22 +767,42 @@ function closeReadme() {
   readmeModal.style.display = 'none';
   readmeBody.innerHTML = '';
   document.body.style.overflow = '';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
 }
 
-// One delegated listener on the grid, so it survives render() replacing innerHTML.
-// Clicks on GitHub/live links and the admin edit button are ignored.
+// Clicking a card sets the hash; the hashchange listener below opens the README.
 grid.addEventListener('click', (e) => {
   if (e.target.closest('a, button')) return;
   const card = e.target.closest('.project-card[data-repo]');
-  if (card) openReadme(card.dataset.repo);
+  if (card) location.hash = card.dataset.repo;
 });
+
+// Deep links: projects.html#<repo_folder> opens that README
+function syncReadmeFromHash() {
+  const folder = decodeURIComponent(location.hash.slice(1));
+  const match = projects.find((p) => p.repo_folder && p.repo_folder === folder);
+  if (match) openReadme(match.repo_folder);
+  else if (readmeModal.style.display !== 'none') closeReadme();
+}
+window.addEventListener('hashchange', syncReadmeFromHash);
 
 document.getElementById('readme-close').addEventListener('click', closeReadme);
 readmeModal.addEventListener('click', (e) => { if (e.target === readmeModal) closeReadme(); });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && readmeModal.style.display !== 'none') closeReadme();
 });
-  
+
+document.getElementById('readme-copy').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  try {
+    await navigator.clipboard.writeText(location.href);
+    btn.textContent = 'Copied ✓';
+  } catch {
+    btn.textContent = 'Copy failed';
+  }
+  setTimeout(() => { btn.textContent = 'Copy link'; }, 1800);
+});
+
 /* =========================================================
    Init
 ========================================================= */
@@ -797,6 +818,7 @@ document.addEventListener('keydown', (e) => {
     }
   }
   render();
+  syncReadmeFromHash();
 })();
 </script>
 
