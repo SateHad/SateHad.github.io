@@ -12,6 +12,7 @@ Built with **FastAPI**, **PostgreSQL**, and **Docker Compose**. The key business
 
 ![TAC Console dashboard](docs/images/console-tickets.png)
 
+> Want the full endpoint reference, schema details, and SQL examples? See the [full README on GitHub](https://github.com/SateHad/tac-ticketing-backend#readme).
 ---
 
 ## Table of Contents
