@@ -11,7 +11,7 @@ Built as a full-stack backend project with **FastAPI**, **PostgreSQL**, and **Do
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?logo=tailwindcss&logoColor=white)
 
 <!-- TODO: add a screenshot or GIF of the console here -->
-![TAC Console dashboard](tac-ticketing-backend/images/console-tickets.png)
+![TAC Console dashboard](SateHad.github.io/tac-ticketing-backend/images/console-tickets.png)
 
 ---
 
