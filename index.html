@@ -71,9 +71,26 @@
       <a href="#education" class="nav-link" data-magnetic>Education</a>
       <a href="#contact" class="nav-link" data-magnetic>Contact</a>
     </nav>
-    <div class="font-mono text-xs text-muted hidden sm:flex items-center gap-2">
-      <span class="status-dot"></span> Open to opportunities
+    <div class="flex items-center gap-4">
+      <div class="font-mono text-xs text-muted hidden sm:flex items-center gap-2">
+        <span class="status-dot"></span> Open to opportunities
+      </div>
+      <button id="menu-btn" type="button" class="md:hidden -mr-2 p-2 text-muted hover:text-ink transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg id="menu-icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="menu-icon-close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile menu (hamburger) -->
+  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-bg border-b border-hairline shadow-lg">
+    <nav class="max-w-7xl mx-auto px-6 py-2 flex flex-col font-mono text-sm tracking-wide text-muted">
+      <a href="#experience" class="py-3 hover:text-ink transition-colors border-b border-hairline/70">Experience</a>
+      <a href="#projects" class="py-3 hover:text-ink transition-colors border-b border-hairline/70">Projects</a>
+      <a href="projects.html" class="py-3 hover:text-ink transition-colors border-b border-hairline/70">All projects</a>
+      <a href="#education" class="py-3 hover:text-ink transition-colors border-b border-hairline/70">Education</a>
+      <a href="#contact" class="py-3 hover:text-ink transition-colors">Contact</a>
+    </nav>
   </div>
 </header>
 
@@ -461,5 +478,6 @@
 </footer>
 
 <script src="main.js"></script>
+<script src="menu.js"></script>
 </body>
 </html>
