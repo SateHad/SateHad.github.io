@@ -16,8 +16,11 @@ rendering project READMEs, Panzoom for the architecture viewer.
   of truth, rendered on the site when a project card is clicked
 
 ## Adding a project
-1. Add `Projects/<folder>/README.md`
-2. Add an entry to `projects.json` with `"repo_folder": "<folder>"`
+Done by the owner through the site's admin mode (requires a GitHub token;
+visitors can only view).
+1. Add `Projects/<folder>/README.md` to the repo
+2. On `projects.html`, unlock admin, click "Add project", and choose the
+   folder from the "README folder" dropdown
 3. Share it at `projects.html#<folder>`
 
 ## License
