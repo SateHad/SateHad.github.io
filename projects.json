@@ -8,7 +8,8 @@
     "tags": ["n8n", "Supabase", "PostgreSQL", "Meta API", "OpenAI"],
     "github": "https://github.com/SateHad/neurolink-rag-architecture",
     "live": "neurolink.html",
-    "liveLabel": "View blueprint"
+    "liveLabel": "View blueprint",
+    "repo_folder": "neurolink-rag-architecture"
   },
     {
     "id": "tac-workflow-backend",
@@ -19,6 +20,7 @@
     "tags": ["PostgreSQL", "FastAPI", "Docker Compose"],
     "github": "https://github.com/SateHad/tac-ticketing-backend",
     "live": "",
-    "liveLabel": ""
+    "liveLabel": "",
+    "repo_folder": "tac-ticketing-backend"
   }
 ]
