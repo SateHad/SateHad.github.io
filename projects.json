@@ -5,22 +5,49 @@
     "status": "Deployed",
     "title": "Omni-Channel RAG Engine",
     "description": "A production routing pipeline ingesting real-time webhooks from Meta APIs, with stateful spam protection, localized context parsing via a Supabase vector store, and Postgres schemas for transaction tracking and dynamic human failover.",
-    "tags": ["n8n", "Supabase", "PostgreSQL", "Meta API", "OpenAI"],
+    "tags": [
+      "n8n",
+      "Supabase",
+      "PostgreSQL",
+      "Meta API",
+      "OpenAI"
+    ],
     "github": "https://github.com/SateHad/neurolink-rag-architecture",
     "live": "neurolink.html",
     "liveLabel": "View blueprint",
     "repo_folder": "neurolink-rag-architecture"
   },
-    {
+  {
     "id": "tac-workflow-backend",
     "category": "TAC System",
     "status": "Deployed",
     "title": "TAC Workflow Backend",
     "description": "A PostgreSQL + FastAPI backend simulating and automating Technical Assistance Center workflows, with 3NF schema design, audit logging, and tamper protection triggers, containerized end to end.",
-    "tags": ["PostgreSQL", "FastAPI", "Docker Compose"],
+    "tags": [
+      "PostgreSQL",
+      "FastAPI",
+      "Docker Compose"
+    ],
     "github": "https://github.com/SateHad/tac-ticketing-backend",
     "live": "",
     "liveLabel": "",
     "repo_folder": "tac-ticketing-backend"
+  },
+  {
+    "category": "Systems Architecture",
+    "status": "In progress",
+    "title": "POSIX C Shell (sate-shell)",
+    "description": "A custom POSIX-compliant command-line shell written in C. Features dynamic memory allocation, command tokenization, and process management using fork() and execvp() system calls.",
+    "tags": [
+      "C",
+      "POSIX",
+      "Linux",
+      "Process Management",
+      "Operating Systems"
+    ],
+    "github": "https://github.com/SateHad/sate-shell",
+    "live": "",
+    "repo_folder": "sate-shell",
+    "id": "project-1794210159846"
   }
 ]
