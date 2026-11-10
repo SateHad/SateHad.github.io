@@ -12,16 +12,17 @@
     theme: {
       extend: {
         colors: {
-          bg: '#F7F6F2',
-          panel: '#FFFFFF',
-          hairline: '#E4E2DD',
-          accent: '#3B6FE0',
-          ink: '#14161A',
-          muted: '#6B7075',
+          bg: '#12151B',
+          panel: '#1B2028',
+          hairline: '#28303D',
+          accent: '#0099FF',
+          ink: '#F1F5F9',
+          muted: '#94A3B8',
         },
         fontFamily: {
           mono: ['"JetBrains Mono"', 'monospace'],
-          serif: ['"Fraunces"', 'serif'],
+          serif: ['"Space Grotesk"', 'sans-serif'],
+          sans: ['"Inter"', 'sans-serif'],
         },
       },
     },
@@ -29,7 +30,7 @@
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -42,24 +43,24 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.02em;
-    color: #6B7075;
+    color: #94A3B8;
     display: block;
     margin-bottom: 6px;
   }
   .field-input {
     width: 100%;
-    border: 1px solid #E4E2DD;
+    border: 1px solid #28303D;
     border-radius: 4px;
     padding: 10px 12px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #14161A;
-    background: #F7F6F2;
+    color: #F1F5F9;
+    background: #12151B;
     outline: none;
     transition: border-color 0.2s ease;
   }
   .field-input:focus {
-    border-color: #3B6FE0;
+    border-color: #0099FF;
   }
   textarea.field-input {
     resize: vertical;
@@ -67,7 +68,8 @@
   }
 
   .link-btn {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
     font-size: 12px;
     display: inline-flex;
     align-items: center;
@@ -77,21 +79,21 @@
     transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
   .link-btn.is-active {
-    background: #14161A;
-    color: #F7F6F2;
+    background: #F1F5F9;
+    color: #12151B;
   }
   .link-btn.is-active:hover {
-    background: #3B6FE0;
+    background: #0099FF;
   }
   .link-btn.is-empty {
     background: transparent;
-    color: #B8BABC;
-    border: 1px dashed #E4E2DD;
+    color: #94A3B8;
+    border: 1px dashed #28303D;
     cursor: default;
   }
 
   .add-card {
-    border: 1px dashed #C9C6BF;
+    border: 1px dashed #28303D;
     border-radius: 6px;
     min-height: 320px;
     display: flex;
@@ -102,14 +104,14 @@
     background: transparent;
   }
   .add-card:hover {
-    border-color: #3B6FE0;
-    background: rgba(59, 111, 224, 0.03);
+    border-color: #0099FF;
+    background: rgba(0, 153, 255, 0.03);
   }
 
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(20, 22, 26, 0.45);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,9 +119,9 @@
     padding: 24px;
   }
   .modal-panel {
-    background: #FFFFFF;
+    background: #1B2028;
     border-radius: 8px;
-    border: 1px solid #E4E2DD;
+    border: 1px solid #28303D;
     max-width: 560px;
     width: 100%;
     max-height: 90vh;
@@ -137,23 +139,23 @@
     font-size: 11px;
     padding: 6px 14px;
     border-radius: 999px;
-    border: 1px solid #E4E2DD;
-    color: #6B7075;
+    border: 1px solid #28303D;
+    color: #94A3B8;
     cursor: pointer;
     transition: all 0.2s ease;
   }
   .status-pill.is-selected {
-    border-color: #3B6FE0;
-    color: #3B6FE0;
-    background: rgba(59, 111, 224, 0.06);
+    border-color: #0099FF;
+    color: #0099FF;
+    background: rgba(0, 153, 255, 0.06);
   }
 
   .card-menu-btn {
-    color: #B8BABC;
+    color: #94A3B8;
     transition: color 0.2s ease;
   }
   .card-menu-btn:hover {
-    color: #14161A;
+    color: #F1F5F9;
   }
 
   /* Hidden admin trigger: a plain dot, not an inviting button */
@@ -161,15 +163,15 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #E4E2DD;
+    background: #28303D;
     cursor: pointer;
     transition: background 0.2s ease;
   }
   #admin-dot:hover {
-    background: #C9C6BF;
+    background: #94A3B8;
   }
   #admin-dot.is-unlocked {
-    background: #3B6FE0;
+    background: #0099FF;
   }
 
   .admin-only {
@@ -188,41 +190,41 @@
   #save-status {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: #6B7075;
+    color: #94A3B8;
   }
   #save-status.is-error {
-    color: #B3261E;
+    color: #E85D3F;
   }
   #save-status.is-ok {
-    color: #3B6FE0;
+    color: #0099FF;
   }
 
   /* README viewer (scoped; affects only #readme-body) */
-  .readme-body { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #14161A; }
+  .readme-body { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #F1F5F9; }
   .readme-body > :first-child { margin-top: 0; }
   .readme-body h1, .readme-body h2, .readme-body h3, .readme-body h4 {
-    font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.2; margin: 1.6em 0 0.6em;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; line-height: 1.2; margin: 1.6em 0 0.6em;
   }
   .readme-body h1 { font-size: 1.9rem; }
-  .readme-body h2 { font-size: 1.4rem; padding-bottom: 0.3em; border-bottom: 1px solid #E4E2DD; }
+  .readme-body h2 { font-size: 1.4rem; padding-bottom: 0.3em; border-bottom: 1px solid #28303D; }
   .readme-body h3 { font-size: 1.15rem; }
   .readme-body p, .readme-body ul, .readme-body ol,
   .readme-body pre, .readme-body table, .readme-body blockquote { margin: 0 0 1em; }
   .readme-body ul { list-style: disc; padding-left: 1.4em; }
   .readme-body ol { list-style: decimal; padding-left: 1.4em; }
-  .readme-body a { color: #3B6FE0; text-decoration: underline; }
+  .readme-body a { color: #0099FF; text-decoration: underline; }
   .readme-body code {
-    background: #F7F6F2; border: 1px solid #E4E2DD; border-radius: 4px; padding: 1px 6px; font-size: 12px;
+    background: #12151B; border: 1px solid #28303D; border-radius: 4px; padding: 1px 6px; font-size: 12px;
   }
   .readme-body pre {
-    background: #F7F6F2; border: 1px solid #E4E2DD; border-radius: 6px; padding: 16px; overflow-x: auto;
+    background: #12151B; border: 1px solid #28303D; border-radius: 6px; padding: 16px; overflow-x: auto;
   }
   .readme-body pre code { background: none; border: 0; padding: 0; }
   .readme-body img { display: inline-block; vertical-align: middle; max-width: 100%; height: auto; border-radius: 6px; }
   .readme-body table { width: 100%; border-collapse: collapse; }
-  .readme-body th, .readme-body td { border: 1px solid #E4E2DD; padding: 8px 12px; text-align: left; }
-  .readme-body blockquote { border-left: 3px solid #3B6FE0; padding-left: 16px; color: #6B7075; }
-  .readme-body hr { border: 0; border-top: 1px solid #E4E2DD; margin: 2em 0; }
+  .readme-body th, .readme-body td { border: 1px solid #28303D; padding: 8px 12px; text-align: left; }
+  .readme-body blockquote { border-left: 3px solid #0099FF; padding-left: 16px; color: #94A3B8; }
+  .readme-body hr { border: 0; border-top: 1px solid #28303D; margin: 2em 0; }
 
   /* README viewer: never let wide content push the layout sideways */
   .readme-body { min-width: 0; overflow-wrap: anywhere; }
@@ -303,7 +305,7 @@
     </p>
     <label class="field-label">Personal access token</label>
     <input type="password" id="auth-token-input" class="field-input mb-4" placeholder="ghp_..." autocomplete="off" />
-    <div id="auth-error" class="font-mono text-xs mb-4" style="color: #B3261E; display: none;"></div>
+    <div id="auth-error" class="font-mono text-xs mb-4" style="color: #E85D3F; display: none;"></div>
     <div class="flex items-center justify-end gap-3">
       <button type="button" id="auth-cancel" class="font-mono text-xs text-muted hover:text-ink px-4 py-2">Cancel</button>
       <button type="button" id="auth-submit" class="primary-btn font-mono text-xs">Unlock</button>
@@ -865,7 +867,7 @@ async function openReadme(folder) {
   } catch (err) {
     if (myRequest !== readmeRequest) return;
     readmeBody.innerHTML =
-      `<p class="font-mono text-xs" style="color:#B3261E;">Could not load README (${escapeHtml(err.message)}).</p>`;
+      `<p class="font-mono text-xs" style="color:#E85D3F;">Could not load README (${escapeHtml(err.message)}).</p>`;
   }
 }
 
