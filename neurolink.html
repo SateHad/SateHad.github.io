@@ -11,16 +11,17 @@
     theme: {
       extend: {
         colors: {
-          bg: '#F7F6F2',
-          panel: '#FFFFFF',
-          hairline: '#E4E2DD',
-          accent: '#3B6FE0',
-          ink: '#14161A',
-          muted: '#6B7075',
+          bg: '#12151B',
+          panel: '#1B2028',
+          hairline: '#28303D',
+          accent: '#0099FF',
+          ink: '#F1F5F9',
+          muted: '#94A3B8',
         },
         fontFamily: {
           mono: ['"JetBrains Mono"', 'monospace'],
-          serif: ['"Fraunces"', 'serif'],
+          serif: ['"Space Grotesk"', 'sans-serif'],
+          sans: ['"Inter"', 'sans-serif'],
         },
       },
     },
@@ -28,7 +29,7 @@
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
 
@@ -42,7 +43,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: #F7F6F2;
+    background: #12151B;
   }
 
   /* The designated workspace below your header */
@@ -65,12 +66,12 @@
   #architecture-canvas {
     max-width: 100%;
     max-height: 100%;
-    border: 1px solid #E4E2DD;
+    border: 1px solid #28303D;
     border-radius: 8px;
-    box-shadow: 0 20px 50px rgba(20, 22, 26, 0.12);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     cursor: grab;
     object-fit: contain;
-    background: #FFFFFF;
+    background: #1B2028;
   }
 
   #architecture-canvas:active {
