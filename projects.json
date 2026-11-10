@@ -35,7 +35,7 @@
   },
   {
     "category": "Systems Architecture",
-    "status": "In progress",
+    "status": "Deployed",
     "title": "POSIX C Shell (sate-shell)",
     "description": "A custom POSIX-compliant command-line shell written in C. Features dynamic memory allocation, command tokenization, and process management using fork() and execvp() system calls.",
     "tags": [
