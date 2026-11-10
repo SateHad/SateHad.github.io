@@ -1,11 +1,14 @@
 /* ---------- Base ---------- */
 html {
   scroll-behavior: smooth;
+  background: #12151B;
+  min-height: 100%;
 }
 
 body {
   position: relative;
   background: #12151B;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
