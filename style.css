@@ -5,7 +5,7 @@ html {
 
 body {
   position: relative;
-  background: #F7F6F2;
+  background: #12151B;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -13,8 +13,8 @@ body {
 }
 
 ::selection {
-  background: #3B6FE0;
-  color: #F7F6F2;
+  background: #0099FF;
+  color: #12151B;
 }
 
 /* ---------- Ambient background ---------- */
@@ -24,8 +24,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(20, 22, 26, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20, 22, 26, 0.035) 1px, transparent 1px);
+    linear-gradient(#28303D 1px, transparent 1px),
+    linear-gradient(90deg, #28303D 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black 30%, transparent 100%);
 }
@@ -41,8 +41,8 @@ section, header, footer {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #3B6FE0;
-  box-shadow: 0 0 8px 2px rgba(59, 111, 224, 0.35);
+  background: #E85D3F;
+  box-shadow: 0 0 8px 2px rgba(232, 93, 63, 0.35);
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -62,14 +62,14 @@ section, header, footer {
   bottom: -2px;
   width: 0%;
   height: 1px;
-  background: #3B6FE0;
+  background: #0099FF;
   transition: width 0.3s ease;
 }
 .nav-link:hover::after {
   width: 100%;
 }
 .nav-link:hover {
-  color: #14161A;
+  color: #F1F5F9;
 }
 
 /* ---------- Primary button ---------- */
@@ -79,18 +79,18 @@ section, header, footer {
   align-items: center;
   justify-content: center;
   padding: 16px 36px;
-  border: 1px solid #14161A;
+  border: 1px solid #0099FF;
   border-radius: 4px;
-  color: #F7F6F2;
-  background: #14161A;
+  color: #12151B;
+  background: #0099FF;
   overflow: hidden;
   isolation: isolate;
   transition: background 0.3s ease, color 0.3s ease;
 }
 .primary-btn:hover {
-  background: #3B6FE0;
-  border-color: #3B6FE0;
-  color: #F7F6F2;
+  background: #F1F5F9;
+  border-color: #F1F5F9;
+  color: #12151B;
 }
 
 /* ---------- Tags ---------- */
@@ -98,30 +98,30 @@ section, header, footer {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.02em;
-  color: #6B7075;
-  border: 1px solid #E4E2DD;
+  color: #94A3B8;
+  border: 1px solid #28303D;
   border-radius: 4px;
   padding: 5px 12px;
   transition: border-color 0.3s ease, color 0.3s ease;
-  background: #FFFFFF;
+  background: #1B2028;
 }
 .exp-card:hover .tag,
 .project-card:hover .tag {
-  border-color: #3B6FE0;
-  color: #3B6FE0;
+  border-color: #0099FF;
+  color: #0099FF;
 }
 
 /* ---------- Experience cards ---------- */
 .exp-card {
-  border: 1px solid #E4E2DD;
+  border: 1px solid #28303D;
   border-radius: 6px;
-  background: #FFFFFF;
+  background: #1B2028;
   transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 .exp-card:hover {
-  border-color: #14161A;
+  border-color: #F1F5F9;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px -18px rgba(20, 22, 26, 0.25);
+  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.5);
 }
 .exp-card-inner {
   padding: 40px;
@@ -131,7 +131,7 @@ section, header, footer {
 }
 
 .exp-current {
-  border-color: #3B6FE0;
+  border-color: #0099FF;
 }
 
 /* ---------- GPA bar ---------- */
@@ -139,14 +139,14 @@ section, header, footer {
   width: 100%;
   height: 4px;
   border-radius: 999px;
-  background: #E4E2DD;
+  background: #28303D;
   overflow: hidden;
 }
 .gpa-bar-fill {
   height: 100%;
   width: 0%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #3B6FE0, #14161A);
+  background: linear-gradient(90deg, #0099FF, #F1F5F9);
 }
 
 /* ---------- Stack pipeline (replaces generic tags-only view for the new role) ---------- */
@@ -157,34 +157,34 @@ section, header, footer {
   gap: 0;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #6B7075;
+  color: #94A3B8;
 }
 .pipeline-node {
-  border: 1px solid #E4E2DD;
+  border: 1px solid #28303D;
   border-radius: 4px;
   padding: 6px 12px;
-  background: #F7F6F2;
-  color: #14161A;
+  background: #12151B;
+  color: #F1F5F9;
 }
 .pipeline-arrow {
   padding: 0 8px;
-  color: #3B6FE0;
+  color: #0099FF;
 }
 
 /* ---------- Project cards ---------- */
 .project-card {
   position: relative;
-  border: 1px solid #E4E2DD;
+  border: 1px solid #28303D;
   border-radius: 6px;
   overflow: hidden;
   min-height: 320px;
-  background: #FFFFFF;
+  background: #1B2028;
   transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 .project-card:hover {
-  border-color: #14161A;
+  border-color: #F1F5F9;
   transform: translateY(-4px);
-  box-shadow: 0 14px 30px -18px rgba(20, 22, 26, 0.25);
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.5);
 }
 .project-card-inner {
   padding: 32px;
@@ -195,39 +195,39 @@ section, header, footer {
 
 /* ---------- Education cards ---------- */
 .edu-card {
-  border: 1px solid #E4E2DD;
+  border: 1px solid #28303D;
   border-radius: 6px;
   padding: 40px;
-  background: #FFFFFF;
+  background: #1B2028;
   transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 .edu-card:hover {
-  border-color: #14161A;
+  border-color: #F1F5F9;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px -18px rgba(20, 22, 26, 0.25);
+  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.5);
 }
 
 /* ---------- Contact links ---------- */
 .contact-link {
   display: block;
-  border: 1px solid #E4E2DD;
+  border: 1px solid #28303D;
   border-radius: 6px;
   padding: 28px;
-  background: #FFFFFF;
+  background: #1B2028;
   transition: border-color 0.35s ease, transform 0.35s ease;
 }
 .contact-link:hover {
-  border-color: #3B6FE0;
+  border-color: #0099FF;
   transform: translateY(-3px);
 }
 .contact-link .arrow {
   display: inline-block;
   transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s ease;
-  color: #6B7075;
+  color: #94A3B8;
 }
 .contact-link:hover .arrow {
   transform: translate(4px, -4px);
-  color: #3B6FE0;
+  color: #0099FF;
 }
 
 /* ---------- Scroll cue ---------- */
@@ -242,7 +242,7 @@ section, header, footer {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #3B6FE0;
+  background: #0099FF;
   animation: scrollLine 1.8s ease-in-out infinite;
 }
 @keyframes scrollLine {
@@ -273,4 +273,28 @@ section, header, footer {
 .hero-word {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+}
+
+/* ---------- Typography (font families / weights only) ---------- */
+body.font-serif,
+body.font-sans {
+  font-family: 'Inter', sans-serif;
+}
+h1.font-serif,
+h2.font-serif,
+h3.font-serif,
+.font-serif.font-medium {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+p.hero-fade,
+p.font-mono.leading-relaxed {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+.primary-btn span,
+.project-card a.bg-ink {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
